@@ -10,7 +10,6 @@
 public class Polynomial implements PolynomialInterface
 {
 
-
 	public Polynomial(String poly)
 	{
 
