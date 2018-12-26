@@ -9,11 +9,9 @@
 
 public class Polynomial implements PolynomialInterface
 {
-
-	public Polynomial(String poly)
-	{
-
-	}
+	private Node LastTerm;
+	private Node HeadTerm;
+	private Node CurrTerm;
 
 	@Override
 	public Polynomial addPolynomials(Polynomial other)
@@ -26,4 +24,8 @@ public class Polynomial implements PolynomialInterface
 	{
 		return null;
 	}
+
+
+
+
 }
