@@ -9,9 +9,8 @@
 
 public class Polynomial implements PolynomialInterface
 {
-	private Node LastTerm;
-	private Node HeadTerm;
-	private Node CurrTerm;
+	private Node head;
+	
 
 	@Override
 	public Polynomial addPolynomials(Polynomial other)

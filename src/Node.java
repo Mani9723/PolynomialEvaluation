@@ -9,5 +9,15 @@
 
 class Node
 {
+	protected int coeff;
+	protected int expo;
+	protected char var;
 
+	protected Node next;
+
+	Node(int coeff, int expo, char var){
+		this.coeff = coeff;
+		this.expo = expo;
+		this.var = var;
+	}
 }
