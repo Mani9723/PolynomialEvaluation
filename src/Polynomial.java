@@ -10,6 +10,12 @@
 public class Polynomial implements PolynomialInterface
 {
 
+
+	public Polynomial(String poly)
+	{
+
+	}
+
 	@Override
 	public Polynomial addPolynomials(Polynomial other)
 	{
