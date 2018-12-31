@@ -36,7 +36,6 @@ public class PolynomialTest
 		String poly = "x^4-x^3-x^2-x-1";
 		polynomial = new Polynomial(poly);
 		assertEquals(poly,polynomial.toString());
-		System.out.println(polynomial);
 		polynomial.deleteList();
 	}
 	@Test
