@@ -8,6 +8,7 @@
  * @since 1.0
  */
 
+@SuppressWarnings("WeakerAccess")
 public class Polynomial implements PolynomialInterface
 {
 	private Node head;
@@ -18,11 +19,8 @@ public class Polynomial implements PolynomialInterface
 	{
 		this.poly = poly;
 		storePoly();
-		printList();
-		deleteList();
 	}
 
-	@SuppressWarnings("Duplicates")
 	private void storePoly()
 	{
 		boolean sign = false, expo = false;
@@ -61,8 +59,14 @@ public class Polynomial implements PolynomialInterface
 	private void createTerm(String coeff, String var, String expo, boolean sign)
 	{
 		int ex;
-		int co = Integer.parseInt(coeff);
-		if(sign) co *= -1;
+		int co;
+		if(coeff.equals("")){
+			co = 0;
+			if(sign) co = -1;
+		} else {
+			co = Integer.parseInt(coeff);
+			if (sign) co *= -1;
+		}
 		if(expo.equals("")) ex = 0;
 		else ex = Integer.parseInt(expo);
 		if(var.equals("")) var = null;
@@ -83,21 +87,6 @@ public class Polynomial implements PolynomialInterface
 		}
 	}
 
-	private void printList()
-	{
-		Node curr = head;
-		while(curr != null){
-			System.out.print(curr.coeff);
-			if(curr.var != null)
-				System.out.print(curr.var);
-				if(curr.expo != 0)
-					System.out.print("^"+curr.expo);
-			curr = curr.next;
-			if(curr != null && curr.coeff > 0) System.out.print("+");
-		}
-		System.out.println();
-	}
-
 	@Override
 	public Polynomial addPolynomials(Polynomial other)
 	{
@@ -110,11 +99,27 @@ public class Polynomial implements PolynomialInterface
 		return null;
 	}
 
-	private void deleteList()
+	public void deleteList()
 	{
 		head = tail = null;
 		System.out.println("List deleted");
 	}
 
-
+	@Override
+	public String toString()
+	{
+		StringBuilder poly = new StringBuilder();
+		Node curr = head;
+		while(curr != null){
+			if(curr.coeff != 0) {
+				if (curr.coeff == -1 && curr.var != null) poly.append("-");
+				else poly.append(curr.coeff);
+			}
+			if(curr.var != null) poly.append(curr.var);
+			if(curr.expo != 0) poly.append("^").append(curr.expo);
+			curr = curr.next;
+			if(curr != null && (curr.coeff >= 0)) poly.append("+");
+		}
+		return poly.toString();
+	}
 }
