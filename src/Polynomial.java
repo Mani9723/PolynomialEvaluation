@@ -1,4 +1,3 @@
-
 /**
  * PolynomialEvaluation
  *
@@ -13,15 +12,20 @@ public class Polynomial implements PolynomialInterface
 {
 	private Node head;
 	private Node tail;
-	private String poly;
+	private int degree;
+	private int terms;
 
 	public Polynomial(String poly)
 	{
-		this.poly = poly;
-		storePoly();
+		if(poly.equals("")) {
+			throw new PolynomialFormatError("Invalid Polynomial: "+poly);
+		}
+		degree = 0;
+		storePoly(poly);
 	}
 
-	private void storePoly()
+	@SuppressWarnings("StringConcatenationInLoop")
+	private void storePoly(String poly)
 	{
 		boolean sign = false, expo = false;
 		String coeff = "", expon = "", var = "";
@@ -37,8 +41,7 @@ public class Polynomial implements PolynomialInterface
 				expo = true;
 				continue;
 			}if(poly.charAt(i) == '-'){
-				if(i > 0 && (Character.isLetter(poly.charAt(i-1))
-						|| expo || Character.isDigit(poly.charAt(i-1)))){
+				if(i > 0){
 					createTerm(coeff,var,expon,sign);
 					coeff = ""; expon = ""; var = "";
 				}
@@ -49,8 +52,7 @@ public class Polynomial implements PolynomialInterface
 					createTerm(coeff,var,expon,sign);
 					coeff = ""; expon = ""; var = "";
 				}
-				expo = false;
-				sign = false;
+				expo = false; sign = false;
 			}
 		}
 		createTerm(coeff,var,expon,sign);
@@ -67,11 +69,12 @@ public class Polynomial implements PolynomialInterface
 			co = Integer.parseInt(coeff);
 			if (sign) co *= -1;
 		}
-		if(expo.equals("")) ex = 0;
+		if(expo.equals("")) ex = 1;
 		else ex = Integer.parseInt(expo);
 		if(var.equals("")) var = null;
 		insertNode(new Node(co,ex,var));
-
+		degree = Math.max(degree,ex);
+		terms++;
 	}
 
 	private void insertNode(Node temp)
@@ -85,6 +88,20 @@ public class Polynomial implements PolynomialInterface
 			this.tail.next = temp;
 			this.tail = temp;
 		}
+	}
+
+	public Node getTerm(int index)
+	{
+		if(index >= terms || index < 0){
+			throw new IndexOutOfBoundsException("Invalid Term");
+		}
+		Node curr = head;
+		int i = 0;
+		while(curr != null){
+			if(i == index) return curr;
+			i++; curr = curr.next;
+		}
+		return null;
 	}
 
 	@Override
@@ -123,20 +140,20 @@ public class Polynomial implements PolynomialInterface
 		return poly.toString();
 	}
 
-	class Node
+	static class Node
 	{
-		private int coeff;
-		private int expo;
-		private String var;
+		protected final int coeff;
+		protected final int expo;
+		protected final String var;
 
 
-		protected Node next;
+		private Node next;
 
-		Node(int coeff, int expo, String var)
+		private Node(int co, int ex, String vr)
 		{
-			this.coeff = coeff;
-			this.expo = expo;
-			this.var = var;
+			this.coeff = co;
+			this.expo = ex;
+			this.var = vr;
 		}
 	}
 }
