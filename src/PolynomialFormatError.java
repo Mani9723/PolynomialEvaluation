@@ -7,7 +7,7 @@
  * @since 1.0
  */
 
-public class PolynomialFormatError extends Exception
+public class PolynomialFormatError extends RuntimeException
 {
 	PolynomialFormatError(){
 		super();
