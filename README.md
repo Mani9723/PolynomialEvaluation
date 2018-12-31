@@ -1,2 +1,2 @@
 # PolynomialEvaluation
-This Project will manipulate Polynomials.
+This Project will read Polynomials as well as adding and subtracting them.
