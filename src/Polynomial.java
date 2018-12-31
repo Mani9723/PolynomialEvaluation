@@ -104,6 +104,11 @@ public class Polynomial implements PolynomialInterface
 		return null;
 	}
 
+	public int getDegree()
+	{
+		return degree;
+	}
+
 	@Override
 	public Polynomial addPolynomials(Polynomial other)
 	{
