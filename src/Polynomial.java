@@ -121,7 +121,7 @@ public class Polynomial implements PolynomialInterface
 		return null;
 	}
 
-	public void deleteList()
+	public void deletePolynomial()
 	{
 		head = tail = null;
 		System.out.println("List deleted");
@@ -138,7 +138,7 @@ public class Polynomial implements PolynomialInterface
 				else poly.append(curr.coeff);
 			}
 			if(curr.var != null) poly.append(curr.var);
-			if(curr.expo != 0) poly.append("^").append(curr.expo);
+			if(curr.expo != 1) poly.append("^").append(curr.expo);
 			curr = curr.next;
 			if(curr != null && (curr.coeff >= 0)) poly.append("+");
 		}
@@ -150,7 +150,6 @@ public class Polynomial implements PolynomialInterface
 		protected final int coeff;
 		protected final int expo;
 		protected final String var;
-
 
 		private Node next;
 
