@@ -21,7 +21,7 @@ public class Polynomial implements PolynomialInterface
 			throw new PolynomialFormatError("Invalid Polynomial: "+poly);
 		}
 		degree = 0;
-		storePoly(poly);
+		storePoly(poly.replaceAll(" ",""));
 	}
 
 	@SuppressWarnings("StringConcatenationInLoop")

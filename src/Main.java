@@ -11,6 +11,6 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		Polynomial polynomial = new Polynomial("-101-3x^6-8x^2+101x^3");
+		Polynomial polynomial = new Polynomial("-101 - 3x^6 - 8x^2 + 101x^3");
 	}
 }
