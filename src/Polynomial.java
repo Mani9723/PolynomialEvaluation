@@ -122,4 +122,21 @@ public class Polynomial implements PolynomialInterface
 		}
 		return poly.toString();
 	}
+
+	class Node
+	{
+		private int coeff;
+		private int expo;
+		private String var;
+
+
+		protected Node next;
+
+		Node(int coeff, int expo, String var)
+		{
+			this.coeff = coeff;
+			this.expo = expo;
+			this.var = var;
+		}
+	}
 }
