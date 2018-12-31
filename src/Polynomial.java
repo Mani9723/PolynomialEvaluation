@@ -25,7 +25,7 @@ public class Polynomial implements PolynomialInterface
 	@SuppressWarnings("Duplicates")
 	private void storePoly()
 	{
-		boolean termComp = false, sign = false, expo = false;
+		boolean sign = false, expo = false;
 		String coeff = "", expon = "", var = "";
 		for(int i = 0; i < poly.length(); i++){
 			if(Character.isDigit(poly.charAt(i))){
@@ -40,31 +40,34 @@ public class Polynomial implements PolynomialInterface
 				continue;
 			}if(poly.charAt(i) == '-'){
 				if(i > 0 && (Character.isLetter(poly.charAt(i-1))
-						|| expo)){
-					int co = Integer.parseInt(coeff);
-					if(sign) co *= -1;
-					insertNode(new Node(co,Integer.parseInt(expon),var));
+						|| expo || Character.isDigit(poly.charAt(i-1)))){
+					createTerm(coeff,var,expon,sign);
 					coeff = ""; expon = ""; var = "";
 				}
 				sign = true; expo = false;
 				continue;
 			}if(poly.charAt(i) == '+'){
-				if(Character.isLetter(poly.charAt(i-1))
-						|| expo){
-					int co = Integer.parseInt(coeff);
-					if(sign) co *= -1;
-					insertNode(new Node(co,Integer.parseInt(expon),var));
-					sign = false;
+				if(i > 0){
+					createTerm(coeff,var,expon,sign);
 					coeff = ""; expon = ""; var = "";
 				}
 				expo = false;
+				sign = false;
 			}
 		}
-		int co = Integer.parseInt(coeff), ex;
+		createTerm(coeff,var,expon,sign);
+	}
+
+	private void createTerm(String coeff, String var, String expo, boolean sign)
+	{
+		int ex;
+		int co = Integer.parseInt(coeff);
 		if(sign) co *= -1;
-		if(expon.equals("")) ex = 0;
-		else ex = Integer.parseInt(expon);
-		insertNode(new Node(co,ex,var.equals("") ? null:var));
+		if(expo.equals("")) ex = 0;
+		else ex = Integer.parseInt(expo);
+		if(var.equals("")) var = null;
+		insertNode(new Node(co,ex,var));
+
 	}
 
 	private void insertNode(Node temp)
@@ -84,9 +87,15 @@ public class Polynomial implements PolynomialInterface
 	{
 		Node curr = head;
 		while(curr != null){
-			System.out.println(curr.expo);
+			System.out.print(curr.coeff);
+			if(curr.var != null)
+				System.out.print(curr.var);
+				if(curr.expo != 0)
+					System.out.print("^"+curr.expo);
 			curr = curr.next;
+			if(curr != null && curr.coeff > 0) System.out.print("+");
 		}
+		System.out.println();
 	}
 
 	@Override
