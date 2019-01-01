@@ -53,7 +53,8 @@ public class Polynomial implements PolynomialInterface
 					coeff = ""; expon = ""; var = "";
 				}
 				expo = false; sign = false;
-			}
+			}else
+				throw new PolynomialFormatError("Invalid Polynomial: " + poly);
 		}
 		createTerm(coeff,var,expon,sign);
 	}
