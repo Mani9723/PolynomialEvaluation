@@ -21,11 +21,11 @@ public class Polynomial implements PolynomialInterface
 			throw new PolynomialFormatError("Invalid Polynomial: "+poly);
 		}
 		degree = 0;
-		storePoly(poly.replaceAll(" ",""));
+		readPoly(poly.replaceAll(" ",""));
 	}
 
 	@SuppressWarnings("StringConcatenationInLoop")
-	private void storePoly(String poly)
+	private void readPoly(String poly)
 	{
 		boolean sign = false, expo = false;
 		String coeff = "", expon = "", var = "";
@@ -70,7 +70,10 @@ public class Polynomial implements PolynomialInterface
 			co = Integer.parseInt(coeff);
 			if (sign) co *= -1;
 		}
-		if(expo.equals("")) ex = 1;
+		if(expo.equals("")){
+			if(var.equals("")) ex = 0;
+			else ex = 1;
+		}
 		else ex = Integer.parseInt(expo);
 		if(var.equals("")) var = null;
 		insertNode(new Node(co,ex,var));
@@ -139,7 +142,7 @@ public class Polynomial implements PolynomialInterface
 				else poly.append(curr.coeff);
 			}
 			if(curr.var != null) poly.append(curr.var);
-			if(curr.expo != 1) poly.append("^").append(curr.expo);
+			if(curr.expo != 1 && curr.expo != 0) poly.append("^").append(curr.expo);
 			curr = curr.next;
 			if(curr != null && (curr.coeff >= 0)) poly.append("+");
 		}
