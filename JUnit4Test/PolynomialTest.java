@@ -65,6 +65,23 @@ public class PolynomialTest
 	}
 
 	@Test
+	public void testPolyWithSpaces()
+	{
+		String poly = "2x^3 - 4x+x- 23";
+		polynomial = new Polynomial(poly);
+		assertEquals("2x^3-4x+x-23",polynomial.toString());
+		polynomial.deletePolynomial();
+	}
+	@Test
+	public void testPolyWithSpaces1()
+	{
+		String poly = "2x^3 - 4x + x - 23";
+		polynomial = new Polynomial(poly);
+		assertEquals("2x^3-4x+x-23",polynomial.toString());
+		polynomial.deletePolynomial();
+	}
+
+	@Test
 	public void testGetTerm1()
 	{
 		String poly = "-x^2+23x+6x^2";
@@ -85,7 +102,7 @@ public class PolynomialTest
 	{
 		String poly = "-x^2+23x+6x^2+33";
 		polynomial = new Polynomial(poly);
-		assertEquals(1,polynomial.getTerm(3).expo);
+		assertEquals(0,polynomial.getTerm(3).expo);
 		polynomial.deletePolynomial();
 	}
 	@Test
@@ -113,5 +130,15 @@ public class PolynomialTest
 		assertEquals(1,polynomial.getDegree());
 		polynomial.deletePolynomial();
 	}
+
+	@Test
+	public void testDegree2()
+	{
+		String poly = "34";
+		polynomial = new Polynomial(poly);
+		assertEquals(0,polynomial.getDegree());
+		polynomial.deletePolynomial();
+	}
+
 
 }
