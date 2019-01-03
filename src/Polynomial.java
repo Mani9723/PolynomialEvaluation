@@ -80,7 +80,6 @@ public class Polynomial implements PolynomialInterface
 		terms++;
 	}
 
-	//TODO Sort the polynomial in proper form. Highest Degree to Lowest Degree
 	private void insertNode(Node temp)
 	{
 		Node curr = head;
