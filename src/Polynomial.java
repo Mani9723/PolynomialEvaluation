@@ -11,7 +11,6 @@
 public class Polynomial implements PolynomialInterface
 {
 	private Node head;
-	private Node tail;
 	private int degree;
 	private int terms;
 
@@ -84,14 +83,29 @@ public class Polynomial implements PolynomialInterface
 	//TODO Sort the polynomial in proper form. Highest Degree to Lowest Degree
 	private void insertNode(Node temp)
 	{
-		if(temp == null)
-			throw new NullPointerException("Null element");
+		Node curr = head;
+		Node prev = null;
 
 		if(head == null){
-			this.head = this.tail = temp;
+			head = temp;
+			head.next = null;
 		}else{
-			this.tail.next = temp;
-			this.tail = temp;
+			if(curr.expo <= temp.expo){
+				temp.next = curr;
+				head = temp;
+			}else if(curr.next == null){
+				temp.next = null;
+				curr.next = temp;
+			}else{
+				while(curr != null) {
+					if(temp.expo >= curr.expo)
+						break;
+					prev = curr;
+					curr = curr.next;
+				}
+				prev.next = temp;
+				temp.next = curr;
+			}
 		}
 	}
 
@@ -128,7 +142,7 @@ public class Polynomial implements PolynomialInterface
 
 	public void deletePolynomial()
 	{
-		head = tail = null;
+		head = null;
 		System.out.println("List deleted");
 	}
 
