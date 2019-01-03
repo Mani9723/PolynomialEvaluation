@@ -92,7 +92,7 @@ public class PolynomialTest
 	@Test
 	public void testGetTerm2()
 	{
-		String poly = "-x^2+23x+6x^2";
+		String poly = "-x^2+23x+6x^4";
 		polynomial = new Polynomial(poly);
 		assertEquals(1,polynomial.getTerm(1).expo);
 		polynomial.deletePolynomial();
