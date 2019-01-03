@@ -87,7 +87,6 @@ public class Polynomial implements PolynomialInterface
 
 		if(head == null){
 			head = temp;
-			head.next = null;
 		}else{
 			if(curr.expo <= temp.expo){
 				temp.next = curr;
@@ -97,8 +96,7 @@ public class Polynomial implements PolynomialInterface
 				curr.next = temp;
 			}else{
 				while(curr != null) {
-					if(temp.expo >= curr.expo)
-						break;
+					if(temp.expo >= curr.expo) break;
 					prev = curr;
 					curr = curr.next;
 				}
