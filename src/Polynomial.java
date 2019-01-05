@@ -13,6 +13,7 @@ public class Polynomial implements PolynomialInterface
 	private Node head;
 	private int degree;
 	private int terms;
+	private String orgPolynomial;
 
 	public Polynomial(String poly)
 	{
@@ -21,6 +22,7 @@ public class Polynomial implements PolynomialInterface
 		}
 		degree = 0;
 		readPoly(poly.replaceAll(" ",""));
+		this.orgPolynomial = toString();
 	}
 
 	@SuppressWarnings("StringConcatenationInLoop")
@@ -63,7 +65,7 @@ public class Polynomial implements PolynomialInterface
 		int ex;
 		int co;
 		if(coeff.equals("")){
-			co = 0;
+			co = 1;
 			if(sign) co = -1;
 		} else {
 			co = Integer.parseInt(coeff);
@@ -74,23 +76,23 @@ public class Polynomial implements PolynomialInterface
 			else ex = 1;
 		}
 		else ex = Integer.parseInt(expo);
-		if(var.equals("")) var = null;
+		if(var.equals("")) var = "";
 		insertNode(new Node(co,ex,var));
-		degree = Math.max(degree,ex);
-		terms++;
+		this.degree = Math.max(this.degree,ex);
+		this.terms++;
 	}
 
 	private void insertNode(Node temp)
 	{
-		Node curr = head;
+		Node curr = this.head;
 		Node prev = null;
 
-		if(head == null){
-			head = temp;
+		if(this.head == null){
+			this.head = temp;
 		}else{
 			if(curr.expo <= temp.expo){
 				temp.next = curr;
-				head = temp;
+				this.head = temp;
 			}else if(curr.next == null){
 				temp.next = null;
 				curr.next = temp;
@@ -108,10 +110,10 @@ public class Polynomial implements PolynomialInterface
 
 	public Node getTerm(int index)
 	{
-		if(index >= terms || index < 0){
+		if(index >= this.terms || index < 0){
 			throw new IndexOutOfBoundsException("Invalid Term");
 		}
-		Node curr = head;
+		Node curr = this.head;
 		int i = 0;
 		while(curr != null){
 			if(i == index) return curr;
@@ -128,7 +130,32 @@ public class Polynomial implements PolynomialInterface
 	@Override
 	public Polynomial addPolynomials(Polynomial other)
 	{
-		return null;
+		Node first,second;
+		int len = Math.min(this.terms,other.terms);
+		if(len == this.terms){
+			first = this.head;
+			second = other.head;
+		}else{
+			first = other.head;
+			second = this.head;
+		}
+		return getSum(len,other,first,second);
+	}
+
+	private Polynomial getSum(int len, Polynomial other, Node...nodes)
+	{
+		Node first = nodes[0], fCurr = first;
+		Node second = nodes[1], sCurr = second;
+		StringBuilder answer = new StringBuilder();
+		while(fCurr != null && sCurr != null){
+			if(sCurr.expo > fCurr.expo){
+				answer.append(sCurr);
+			}
+		}
+
+
+
+		return new Polynomial(answer.toString());
 	}
 
 	@Override
@@ -143,6 +170,26 @@ public class Polynomial implements PolynomialInterface
 		System.out.println("List deleted");
 	}
 
+	private String termToString(Node term)
+	{
+		String ans = "";
+		if(term.coeff != 0) {
+			if (term.coeff == -1 && term.var != ""){
+				ans += "-";
+			}
+			else if(term.var != "" && term.coeff == 1){
+				ans += "";
+			}
+			else{ ans += term.coeff;}
+		}
+		if(term.var != ""){ans += term.var;}
+		if(term.expo != 1 && term.expo != 0){
+			ans+= "^"; ans+=term.expo;
+		}
+		return ans;
+	}
+
+
 	@Override
 	public String toString()
 	{
@@ -150,10 +197,11 @@ public class Polynomial implements PolynomialInterface
 		Node curr = head;
 		while(curr != null){
 			if(curr.coeff != 0) {
-				if (curr.coeff == -1 && curr.var != null) poly.append("-");
+				if (curr.coeff == -1 && curr.var != "") poly.append("-");
+				else if(curr.var != "" && curr.coeff == 1) poly.append("");
 				else poly.append(curr.coeff);
 			}
-			if(curr.var != null) poly.append(curr.var);
+			if(curr.var != "") poly.append(curr.var);
 			if(curr.expo != 1 && curr.expo != 0) poly.append("^").append(curr.expo);
 			curr = curr.next;
 			if(curr != null && (curr.coeff >= 0)) poly.append("+");
@@ -161,7 +209,7 @@ public class Polynomial implements PolynomialInterface
 		return poly.toString();
 	}
 
-	static class Node
+	protected static class Node
 	{
 		protected final int coeff;
 		protected final int expo;

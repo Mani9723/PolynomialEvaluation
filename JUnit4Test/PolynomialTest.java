@@ -1,3 +1,4 @@
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -110,7 +111,7 @@ public class PolynomialTest
 	{
 		String poly = "-x^2+23x+6x^2+33";
 		polynomial= new Polynomial(poly);
-		assertNull(null,polynomial.getTerm(3).var);
+		assertEquals("",polynomial.getTerm(3).var);
 		polynomial.deletePolynomial();
 	}
 	@Test
@@ -140,5 +141,14 @@ public class PolynomialTest
 		polynomial.deletePolynomial();
 	}
 
-
+	@Test
+	public void testAdd1()
+	{
+		String poly1 = "5x^5+3x^2+4x+8";
+		String poly2 = "6x^8+4x^7+9x^3+11x^2+2x+18";
+		polynomial = new Polynomial(poly1);
+		Polynomial polynomial1 = new Polynomial(poly2);
+		Polynomial result = polynomial.addPolynomials(polynomial1);
+		assertEquals("6x^4-3x^5+17x^2-3y^2+112",result.toString());
+	}
 }
