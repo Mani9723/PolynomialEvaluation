@@ -144,18 +144,18 @@ public class Polynomial implements PolynomialInterface
 
 	private Polynomial getSum(int len, Polynomial other, Node...nodes)
 	{
-		Node first = nodes[0], fCurr = first;
-		Node second = nodes[1], sCurr = second;
-		StringBuilder answer = new StringBuilder();
-		while(fCurr != null && sCurr != null){
-			if(sCurr.expo > fCurr.expo){
-				answer.append(sCurr);
-			}
-		}
+//		Node first = nodes[0], fCurr = first;
+//		Node second = nodes[1], sCurr = second;
+//		StringBuilder answer = new StringBuilder();
+//		while(fCurr != null && sCurr != null){
+//			if(sCurr.expo > fCurr.expo){
+//				answer.append(sCurr);
+//			}
+//		}
 
 
 
-		return new Polynomial(answer.toString());
+		return null;
 	}
 
 	@Override
