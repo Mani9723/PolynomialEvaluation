@@ -130,31 +130,6 @@ public class Polynomial implements PolynomialInterface
 	@Override
 	public Polynomial addPolynomials(Polynomial other)
 	{
-		Node first,second;
-		int len = Math.min(this.terms,other.terms);
-		if(len == this.terms){
-			first = this.head;
-			second = other.head;
-		}else{
-			first = other.head;
-			second = this.head;
-		}
-		return getSum(len,other,first,second);
-	}
-
-	private Polynomial getSum(int len, Polynomial other, Node...nodes)
-	{
-//		Node first = nodes[0], fCurr = first;
-//		Node second = nodes[1], sCurr = second;
-//		StringBuilder answer = new StringBuilder();
-//		while(fCurr != null && sCurr != null){
-//			if(sCurr.expo > fCurr.expo){
-//				answer.append(sCurr);
-//			}
-//		}
-
-
-
 		return null;
 	}
 

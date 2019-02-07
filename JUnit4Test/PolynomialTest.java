@@ -141,6 +141,7 @@ public class PolynomialTest
 		polynomial.deletePolynomial();
 	}
 
+	@Ignore
 	@Test
 	public void testAdd1()
 	{
