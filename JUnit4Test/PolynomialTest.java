@@ -206,4 +206,15 @@ public class PolynomialTest
 		Polynomial result = polynomial.addPolynomials(polynomial1);
 		assertEquals("-3x^3+3x-16",result.toString());
 	}
+
+	@Test
+	public void testSubtract()
+	{
+		String poly = "6x^3+7x^2+9";
+		String poly1 = "3x^3+4x^2+5";
+		Polynomial polynomial = new Polynomial(poly);
+		Polynomial polynomial1 = new Polynomial(poly1);
+		Polynomial result = polynomial.subPolynomials(polynomial1);
+		assertEquals("3x^3+3x^2+4",result.toString());
+	}
 }
