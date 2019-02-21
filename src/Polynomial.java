@@ -1,4 +1,3 @@
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -59,7 +58,7 @@ public class Polynomial implements PolynomialInterface
 				}
 				expo = false; sign = false;
 			}else
-				throw new PolynomialFormatError("Invalid Polynomial: " + poly);
+				throw new PolynomialFormatError("Invalid Polynomial: " + poly.charAt(i));
 		}
 		createTerm(coeff,var,expon,sign);
 	}
@@ -157,15 +156,43 @@ public class Polynomial implements PolynomialInterface
 			addend = pairs.getKey().a;
 			auguend = pairs.getKey().b;
 			if(addend == null){
+				appendSign(auguend,result);
 				result.append(termToString(auguend));
 			}else if(auguend == null){
+				appendSign(addend,result);
 				result.append(termToString(addend));
 			}else{
-
+				int coefSum = addend.coeff + auguend.coeff;
+				if(result.length() != 0 && coefSum >= 0) result.append("+");
+				result.append(coefSum).append(addend.var).append("^")
+						.append(addend.expo);
 			}
 		}
 		sum = new Polynomial(result.toString());
 		return sum;
+	}
+
+	private void appendSign(Node node, StringBuilder result)
+	{
+		if(result.length() != 0)
+			if(node.coeff >= 0) result.append("+");
+	}
+
+	@Deprecated
+	@SuppressWarnings("unused")
+	private void addNode(Node origin,Node node)
+	{
+		Node curr = origin;
+		if(curr == null){
+			origin = node;
+			origin.next = null;
+			return;
+		}
+		while(curr != null){
+			curr = curr.next;
+		}
+		curr = node;
+		curr.next = null;
 	}
 
 	private void storeHashTable(Polynomial one, Polynomial two)
