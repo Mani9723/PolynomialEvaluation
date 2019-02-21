@@ -16,6 +16,7 @@ public class Polynomial implements PolynomialInterface
 	private Node head;
 	private int degree;
 	private int terms;
+
 	private LinkedHashMap<Pair,Integer> termPairs;
 
 	public Polynomial(String poly)
@@ -39,18 +40,15 @@ public class Polynomial implements PolynomialInterface
 				else coeff += poly.charAt(i);
 				continue;
 			}if(Character.isLetter(poly.charAt(i))){
-				var = String.valueOf(poly.charAt(i));
-				continue;
+				var = String.valueOf(poly.charAt(i)); continue;
 			}if(poly.charAt(i) == '^'){
-				expo = true;
-				continue;
+				expo = true; continue;
 			}if(poly.charAt(i) == '-'){
 				if(i > 0){
 					createTerm(coeff,var,expon,sign);
 					coeff = ""; expon = ""; var = "";
 				}
-				sign = true; expo = false;
-				continue;
+				sign = true; expo = false; continue;
 			}if(poly.charAt(i) == '+'){
 				if(i > 0){
 					createTerm(coeff,var,expon,sign);
@@ -78,12 +76,12 @@ public class Polynomial implements PolynomialInterface
 			else ex = 1;
 		} else ex = Integer.parseInt(expo);
 		if(var.equals("")) var = "";
-		insertNode(new Node(co,ex,var));
+		insertSortedNode(new Node(co,ex,var));
 		this.degree = Math.max(this.degree,ex);
 		this.terms++;
 	}
 
-	private void insertNode(Node temp)
+	private void insertSortedNode(Node temp)
 	{
 		Node curr = this.head;
 		Node prev = null;
@@ -172,8 +170,7 @@ public class Polynomial implements PolynomialInterface
 
 	private void appendSign(Node node, StringBuilder result)
 	{
-		if(result.length() != 0)
-			if(node.coeff >= 0) result.append("+");
+		if(result.length() != 0 && node.coeff >= 0) result.append("+");
 	}
 
 	@Deprecated
@@ -217,7 +214,36 @@ public class Polynomial implements PolynomialInterface
 	@Override
 	public Polynomial subPolynomials(Polynomial other)
 	{
-		return null;
+		preparePolys(other);
+		Polynomial difference = calcDiff();
+		termPairs.clear();
+		return difference;
+	}
+
+	private Polynomial calcDiff()
+	{
+		Polynomial sum;
+		Node subFirst, subSecond;
+		StringBuilder result = new StringBuilder();
+
+		for (Map.Entry<Pair, Integer> pairs : termPairs.entrySet()) {
+			subFirst = pairs.getKey().a;
+			subSecond = pairs.getKey().b;
+			if (subFirst == null) {
+				appendSign(subSecond, result);
+				result.append(termToString(subSecond));
+			} else if (subSecond == null) {
+				appendSign(subFirst, result);
+				result.append(termToString(subFirst));
+			} else {
+				int coefSum = subFirst.coeff - subSecond.coeff;
+				if (result.length() != 0 && coefSum >= 0) result.append("+");
+				result.append(coefSum).append(subFirst.var).append("^")
+						.append(subFirst.expo);
+			}
+		}
+		sum = new Polynomial(result.toString());
+		return sum;
 	}
 
 	public void deletePolynomial()
@@ -280,6 +306,7 @@ public class Polynomial implements PolynomialInterface
 			this.expo = ex;
 			this.var = vr;
 		}
+		@SuppressWarnings("unused")
 		private Node()
 		{
 			this.coeff = 0;
