@@ -141,7 +141,6 @@ public class PolynomialTest
 		polynomial.deletePolynomial();
 	}
 
-	@Ignore
 	@Test
 	public void testAdd1()
 	{
@@ -150,7 +149,7 @@ public class PolynomialTest
 		polynomial = new Polynomial(poly1);
 		Polynomial polynomial1 = new Polynomial(poly2);
 		Polynomial result = polynomial.addPolynomials(polynomial1);
-		assertEquals("6x^4-3x^5+17x^2-3y^2+112",result.toString());
+		assertEquals("6x^8+4x^7+5x^5+9x^3+14x^2+6x+26",result.toString());
 	}
 
 	@Test
@@ -161,6 +160,50 @@ public class PolynomialTest
 		polynomial = new Polynomial(poly1);
 		Polynomial polynomial1 = new Polynomial(poly2);
 		Polynomial result = polynomial.addPolynomials(polynomial1);
-		assertEquals("6x^4-3x^5+17x^2-3y^2+112",result.toString());
+		assertEquals("2x^8+9x^6+8x^5+4x^3+11x^2+4x+15",result.toString());
+	}
+
+	@Test
+	public void testAdd6()
+	{
+		String poly2 = "5x^5+3x^2+4x+8";
+		String poly1 = "2x^8+9x^6+3x^5+4x^3+8x^2+7";
+		polynomial = new Polynomial(poly2);
+		Polynomial polynomial1 = new Polynomial(poly1);
+		Polynomial result = polynomial.addPolynomials(polynomial1);
+		assertEquals("2x^8+9x^6+8x^5+4x^3+11x^2+4x+15",result.toString());
+	}
+
+	@Test
+	public void testAdd3()
+	{
+		String poly = "3x^3 - 5x + 9";
+		String poly1 = "6x^3 + 8x - 7";
+		Polynomial polynomial = new Polynomial(poly);
+		Polynomial polynomial1 = new Polynomial(poly1);
+		Polynomial result = polynomial.addPolynomials(polynomial1);
+		assertEquals("9x^3+3x+2",result.toString());
+	}
+
+	@Test
+	public void testAdd4()
+	{
+		String poly = "3x^3 + 5x + 9";
+		String poly1 = "6x^3 - 8x - 7";
+		Polynomial polynomial = new Polynomial(poly);
+		Polynomial polynomial1 = new Polynomial(poly1);
+		Polynomial result = polynomial.addPolynomials(polynomial1);
+		assertEquals("9x^3-3x+2",result.toString());
+	}
+
+	@Test
+	public void testAdd5()
+	{
+		String poly = "3x^3 - 5x - 9";
+		String poly1 = "-6x^3 + 8x - 7";
+		Polynomial polynomial = new Polynomial(poly);
+		Polynomial polynomial1 = new Polynomial(poly1);
+		Polynomial result = polynomial.addPolynomials(polynomial1);
+		assertEquals("-3x^3+3x-16",result.toString());
 	}
 }
