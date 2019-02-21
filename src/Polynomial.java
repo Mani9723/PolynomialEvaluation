@@ -1,3 +1,7 @@
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * PolynomialEvaluation
  *
@@ -13,7 +17,7 @@ public class Polynomial implements PolynomialInterface
 	private Node head;
 	private int degree;
 	private int terms;
-	private String orgPolynomial;
+	private LinkedHashMap<Pair,Integer> termPairs;
 
 	public Polynomial(String poly)
 	{
@@ -22,7 +26,7 @@ public class Polynomial implements PolynomialInterface
 		}
 		degree = 0;
 		readPoly(poly.replaceAll(" ",""));
-		this.orgPolynomial = toString();
+		termPairs = new LinkedHashMap<>();
 	}
 
 	@SuppressWarnings("StringConcatenationInLoop")
@@ -130,7 +134,59 @@ public class Polynomial implements PolynomialInterface
 	@Override
 	public Polynomial addPolynomials(Polynomial other)
 	{
-		return null;
+		preparePolys(other);
+		Polynomial result = calcSum();
+		termPairs.clear();
+		return result;
+	}
+
+	private void preparePolys(Polynomial other)
+	{
+		boolean first = this.terms <= other.terms;
+		if(first) storeHashTable(this,other);
+		else storeHashTable(other,this);
+	}
+
+	private Polynomial calcSum()
+	{
+		Polynomial sum;
+		Node addend, auguend;
+		StringBuilder result = new StringBuilder();
+
+		for(Map.Entry<Pair,Integer> pairs : termPairs.entrySet()){
+			addend = pairs.getKey().a;
+			auguend = pairs.getKey().b;
+			if(addend == null){
+				result.append(termToString(auguend));
+			}else if(auguend == null){
+				result.append(termToString(addend));
+			}else{
+
+			}
+		}
+		sum = new Polynomial(result.toString());
+		return sum;
+	}
+
+	private void storeHashTable(Polynomial one, Polynomial two)
+	{
+		Node firstCurr, secCurr;
+		firstCurr = one.head;
+		secCurr = two.head;
+
+		while(firstCurr != null){
+			if(firstCurr.expo < secCurr.expo){
+				termPairs.put(new Pair(secCurr,null),secCurr.expo);
+				secCurr = secCurr.next;
+			}else if(firstCurr.expo > secCurr.expo) {
+				termPairs.put(new Pair(firstCurr,null),firstCurr.expo);
+				firstCurr = firstCurr.next;
+			}else{
+				termPairs.put(new Pair(firstCurr,secCurr),firstCurr.expo);
+				firstCurr = firstCurr.next;
+				secCurr = secCurr.next;
+			}
+		}
 	}
 
 	@Override
@@ -141,23 +197,24 @@ public class Polynomial implements PolynomialInterface
 
 	public void deletePolynomial()
 	{
-		head = null;
+		this.head = null;
 		System.out.println("List deleted");
 	}
+
 
 	private String termToString(Node term)
 	{
 		String ans = "";
 		if(term.coeff != 0) {
-			if (term.coeff == -1 && term.var != ""){
+			if (term.coeff == -1 && !term.var.equals("")){
 				ans += "-";
 			}
-			else if(term.var != "" && term.coeff == 1){
+			else if(!term.var.equals("") && term.coeff == 1){
 				ans += "";
 			}
 			else{ ans += term.coeff;}
 		}
-		if(term.var != ""){ans += term.var;}
+		if(!term.var.equals("")){ans += term.var;}
 		if(term.expo != 1 && term.expo != 0){
 			ans+= "^"; ans+=term.expo;
 		}
@@ -172,11 +229,11 @@ public class Polynomial implements PolynomialInterface
 		Node curr = head;
 		while(curr != null){
 			if(curr.coeff != 0) {
-				if (curr.coeff == -1 && curr.var != "") poly.append("-");
-				else if(curr.var != "" && curr.coeff == 1) poly.append("");
+				if (curr.coeff == -1 && !curr.var.equals("")) poly.append("-");
+				else if(!curr.var.equals("") && curr.coeff == 1) poly.append("");
 				else poly.append(curr.coeff);
 			}
-			if(curr.var != "") poly.append(curr.var);
+			if(!curr.var.equals("")) poly.append(curr.var);
 			if(curr.expo != 1 && curr.expo != 0) poly.append("^").append(curr.expo);
 			curr = curr.next;
 			if(curr != null && (curr.coeff >= 0)) poly.append("+");
@@ -197,6 +254,22 @@ public class Polynomial implements PolynomialInterface
 			this.coeff = co;
 			this.expo = ex;
 			this.var = vr;
+		}
+		private Node()
+		{
+			this.coeff = 0;
+			this.expo = 0;
+			this.var = null;
+		}
+	}
+
+	private static class Pair
+	{
+		Node a;
+		Node b;
+		private Pair(Node first, Node second){
+			a = first;
+			b = second;
 		}
 	}
 }
