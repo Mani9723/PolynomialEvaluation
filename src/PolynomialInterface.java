@@ -16,14 +16,14 @@ public interface PolynomialInterface
 	 * @param other Second Polynomial
 	 * @return Sum of POlynomials
 	 */
-	Polynomial addPolynomials(Polynomial other);
+	Polynomial add(Polynomial other);
 
 	/**
 	 * Defines the subtract method for the polynomial
 	 * @param other Second Polynomial
 	 * @return Difference of Polynomials
 	 */
-	Polynomial subPolynomials(Polynomial other);
+	Polynomial subtract(Polynomial other);
 
 
 }

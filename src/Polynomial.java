@@ -29,6 +29,14 @@ public class Polynomial implements PolynomialInterface
 		termPairs = new LinkedHashMap<>();
 	}
 
+	@SuppressWarnings("unused")
+	private Polynomial(Node newHead)
+	{
+		this.head = newHead;
+		this.degree = newHead.expo;
+		//this.terms = termPairs.size();
+	}
+
 	@SuppressWarnings("StringConcatenationInLoop")
 	private void readPoly(String poly)
 	{
@@ -127,7 +135,7 @@ public class Polynomial implements PolynomialInterface
 	}
 
 	@Override
-	public Polynomial addPolynomials(Polynomial other)
+	public Polynomial add(Polynomial other)
 	{
 		preparePolys(other);
 		Polynomial result = calcSum();
@@ -135,11 +143,21 @@ public class Polynomial implements PolynomialInterface
 		return result;
 	}
 
+	@Override
+	public Polynomial subtract(Polynomial other)
+	{
+		preparePolys(other);
+		Polynomial difference = calcDiff();
+		termPairs.clear();
+		return difference;
+	}
+
+
 	private void preparePolys(Polynomial other)
 	{
 		boolean first = this.terms <= other.terms;
-		if(first) storeHashTable(this,other);
-		else storeHashTable(other,this);
+		if(first) populateHashMap(this,other);
+		else populateHashMap(other,this);
 	}
 
 	private Polynomial calcSum()
@@ -160,8 +178,8 @@ public class Polynomial implements PolynomialInterface
 			}else{
 				int coefSum = addend.coeff + auguend.coeff;
 				if(result.length() != 0 && coefSum >= 0) result.append("+");
-				result.append(coefSum).append(addend.var).append("^")
-						.append(addend.expo);
+				result.append(coefSum).append(addend.var)
+						.append("^").append(addend.expo);
 			}
 		}
 		sum = new Polynomial(result.toString());
@@ -173,24 +191,7 @@ public class Polynomial implements PolynomialInterface
 		if(result.length() != 0 && node.coeff >= 0) result.append("+");
 	}
 
-	@Deprecated
-	@SuppressWarnings("unused")
-	private void addNode(Node origin,Node node)
-	{
-		Node curr = origin;
-		if(curr == null){
-			origin = node;
-			origin.next = null;
-			return;
-		}
-		while(curr != null){
-			curr = curr.next;
-		}
-		curr = node;
-		curr.next = null;
-	}
-
-	private void storeHashTable(Polynomial one, Polynomial two)
+	private void populateHashMap(Polynomial one, Polynomial two)
 	{
 		Node firstCurr, secCurr;
 		firstCurr = one.head;
@@ -209,15 +210,10 @@ public class Polynomial implements PolynomialInterface
 				secCurr = secCurr.next;
 			}
 		}
-	}
-
-	@Override
-	public Polynomial subPolynomials(Polynomial other)
-	{
-		preparePolys(other);
-		Polynomial difference = calcDiff();
-		termPairs.clear();
-		return difference;
+		while(secCurr != null){
+			termPairs.put(new Pair(secCurr,null),secCurr.expo);
+			secCurr = secCurr.next;
+		}
 	}
 
 	private Polynomial calcDiff()
@@ -257,18 +253,15 @@ public class Polynomial implements PolynomialInterface
 	{
 		String ans = "";
 		if(term.coeff != 0) {
-			if (term.coeff == -1 && !term.var.equals("")){
+			if (term.coeff == -1 && !term.var.equals(""))
 				ans += "-";
-			}
-			else if(!term.var.equals("") && term.coeff == 1){
+			else if(!term.var.equals("") && term.coeff == 1)
 				ans += "";
-			}
 			else{ ans += term.coeff;}
 		}
 		if(!term.var.equals("")){ans += term.var;}
-		if(term.expo != 1 && term.expo != 0){
+		if(term.expo != 1 && term.expo != 0)
 			ans+= "^"; ans+=term.expo;
-		}
 		return ans;
 	}
 
@@ -305,13 +298,6 @@ public class Polynomial implements PolynomialInterface
 			this.coeff = co;
 			this.expo = ex;
 			this.var = vr;
-		}
-		@SuppressWarnings("unused")
-		private Node()
-		{
-			this.coeff = 0;
-			this.expo = 0;
-			this.var = null;
 		}
 	}
 
