@@ -1,4 +1,3 @@
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -148,7 +147,7 @@ public class PolynomialTest
 		String poly2 = "6x^8+4x^7+9x^3+11x^2+2x+18";
 		polynomial = new Polynomial(poly1);
 		Polynomial polynomial1 = new Polynomial(poly2);
-		Polynomial result = polynomial.addPolynomials(polynomial1);
+		Polynomial result = polynomial.add(polynomial1);
 		assertEquals("6x^8+4x^7+5x^5+9x^3+14x^2+6x+26",result.toString());
 	}
 
@@ -159,7 +158,7 @@ public class PolynomialTest
 		String poly2 = "2x^8+9x^6+3x^5+4x^3+8x^2+7";
 		polynomial = new Polynomial(poly1);
 		Polynomial polynomial1 = new Polynomial(poly2);
-		Polynomial result = polynomial.addPolynomials(polynomial1);
+		Polynomial result = polynomial.add(polynomial1);
 		assertEquals("2x^8+9x^6+8x^5+4x^3+11x^2+4x+15",result.toString());
 	}
 
@@ -170,7 +169,7 @@ public class PolynomialTest
 		String poly1 = "2x^8+9x^6+3x^5+4x^3+8x^2+7";
 		polynomial = new Polynomial(poly2);
 		Polynomial polynomial1 = new Polynomial(poly1);
-		Polynomial result = polynomial.addPolynomials(polynomial1);
+		Polynomial result = polynomial.add(polynomial1);
 		assertEquals("2x^8+9x^6+8x^5+4x^3+11x^2+4x+15",result.toString());
 	}
 
@@ -181,7 +180,7 @@ public class PolynomialTest
 		String poly1 = "6x^3 + 8x - 7";
 		Polynomial polynomial = new Polynomial(poly);
 		Polynomial polynomial1 = new Polynomial(poly1);
-		Polynomial result = polynomial.addPolynomials(polynomial1);
+		Polynomial result = polynomial.add(polynomial1);
 		assertEquals("9x^3+3x+2",result.toString());
 	}
 
@@ -192,7 +191,7 @@ public class PolynomialTest
 		String poly1 = "6x^3 - 8x - 7";
 		Polynomial polynomial = new Polynomial(poly);
 		Polynomial polynomial1 = new Polynomial(poly1);
-		Polynomial result = polynomial.addPolynomials(polynomial1);
+		Polynomial result = polynomial.add(polynomial1);
 		assertEquals("9x^3-3x+2",result.toString());
 	}
 
@@ -203,8 +202,19 @@ public class PolynomialTest
 		String poly1 = "-6x^3 + 8x - 7";
 		Polynomial polynomial = new Polynomial(poly);
 		Polynomial polynomial1 = new Polynomial(poly1);
-		Polynomial result = polynomial.addPolynomials(polynomial1);
+		Polynomial result = polynomial.add(polynomial1);
 		assertEquals("-3x^3+3x-16",result.toString());
+	}
+
+	@Test
+	public void testAdd7()
+	{
+		String poly = "3x^3";
+		String poly1 = "-6x^3 + 8x - 7";
+		Polynomial polynomial = new Polynomial(poly1);
+		Polynomial polynomial1 = new Polynomial(poly);
+		Polynomial result = polynomial.add(polynomial1);
+		assertEquals("-3x^3+8x-7",result.toString());
 	}
 
 	@Test
@@ -214,7 +224,7 @@ public class PolynomialTest
 		String poly1 = "3x^3+4x^2+5";
 		Polynomial polynomial = new Polynomial(poly);
 		Polynomial polynomial1 = new Polynomial(poly1);
-		Polynomial result = polynomial.subPolynomials(polynomial1);
+		Polynomial result = polynomial.subtract(polynomial1);
 		assertEquals("3x^3+3x^2+4",result.toString());
 	}
 }
