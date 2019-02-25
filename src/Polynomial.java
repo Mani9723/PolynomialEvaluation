@@ -16,14 +16,15 @@ public class Polynomial implements PolynomialInterface
 	private Node head;
 	private int degree;
 	private int terms;
+	private String originalPolynomial;
 
 	private LinkedHashMap<Pair,Integer> termPairs;
 
 	public Polynomial(String poly)
 	{
-		if(poly.equals("")) {
-			throw new PolynomialFormatError("Invalid Polynomial: "+poly);
-		}
+		if(poly.equals(""))
+			throw new PolynomialFormatError("Empty Polynomial");
+		originalPolynomial = new String(poly);
 		degree = 0;
 		readPoly(poly.replaceAll(" ",""));
 		termPairs = new LinkedHashMap<>();
@@ -47,7 +48,7 @@ public class Polynomial implements PolynomialInterface
 				if(expo) expon += poly.charAt(i);
 				else coeff += poly.charAt(i);
 				continue;
-			}if(Character.isLetter(poly.charAt(i))){
+			}if(Character.isLetter(poly.charAt(i)) && !expo){
 				var = String.valueOf(poly.charAt(i)); continue;
 			}if(poly.charAt(i) == '^'){
 				expo = true; continue;
@@ -64,7 +65,7 @@ public class Polynomial implements PolynomialInterface
 				}
 				expo = false; sign = false;
 			}else
-				throw new PolynomialFormatError("Invalid Polynomial: " + poly.charAt(i));
+				throw new PolynomialFormatError("Invalid Polynomial: " + originalPolynomial);
 		}
 		createTerm(coeff,var,expon,sign);
 	}
@@ -169,10 +170,7 @@ public class Polynomial implements PolynomialInterface
 		for(Map.Entry<Pair,Integer> pairs : termPairs.entrySet()){
 			addend = pairs.getKey().a;
 			auguend = pairs.getKey().b;
-			if(addend == null){
-				appendSign(auguend,result);
-				result.append(termToString(auguend));
-			}else if(auguend == null){
+			if(auguend == null){
 				appendSign(addend,result);
 				result.append(termToString(addend));
 			}else{
@@ -225,10 +223,7 @@ public class Polynomial implements PolynomialInterface
 		for (Map.Entry<Pair, Integer> pairs : termPairs.entrySet()) {
 			subFirst = pairs.getKey().a;
 			subSecond = pairs.getKey().b;
-			if (subFirst == null) {
-				appendSign(subSecond, result);
-				result.append(termToString(subSecond));
-			} else if (subSecond == null) {
+			if (subSecond == null) {
 				appendSign(subFirst, result);
 				result.append(termToString(subFirst));
 			} else {
@@ -261,7 +256,7 @@ public class Polynomial implements PolynomialInterface
 		}
 		if(!term.var.equals("")){ans += term.var;}
 		if(term.expo != 1 && term.expo != 0)
-			ans+= "^"; ans+=term.expo;
+			ans += "^" + term.expo;
 		return ans;
 	}
 
