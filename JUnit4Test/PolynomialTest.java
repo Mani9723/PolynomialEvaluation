@@ -49,11 +49,11 @@ public class PolynomialTest
 		polynomial = new Polynomial(poly);
 	}
 
-	@Ignore
+
 	@Test
 	public void testInvalidCharacter2()
 	{
-		String poly = "3x^-8";
+		String poly = "3x^-b";
 		thrown.expect(PolynomialFormatError.class);
 		thrown.expectMessage("Invalid Polynomial: " + poly);
 		polynomial = new Polynomial(poly);
@@ -83,6 +83,8 @@ public class PolynomialTest
 		assertEquals(poly,polynomial.toString());
 
 	}
+
+	@Ignore
 	@Test
 	public void testPoly3()
 	{
@@ -166,6 +168,25 @@ public class PolynomialTest
 		assertEquals("",polynomial.getTerm(3).var);
 
 	}
+
+	@Test
+	public void testInvalidGetTerm()
+	{
+		polynomial = new Polynomial("3x^2");
+		thrown.expect(IndexOutOfBoundsException.class);
+		thrown.expectMessage("Invalid Term");
+		polynomial.getTerm(34);
+	}
+
+	@Test
+	public void testInvalidGetTerm1()
+	{
+		polynomial = new Polynomial("3x^2");
+		thrown.expect(IndexOutOfBoundsException.class);
+		thrown.expectMessage("Invalid Term");
+		polynomial.getTerm(-34);
+	}
+
 	@Test
 	public void testDegree()
 	{
@@ -302,6 +323,12 @@ public class PolynomialTest
 		polynomial1 = new Polynomial(poly1);
 		result = polynomial.subtract(polynomial1);
 		assertEquals("3x^3+3x^2+4",result.toString());
+	}
+
+	@Test
+	public void testSubtract1()
+	{
+		String poly = "";
 	}
 
 

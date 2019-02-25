@@ -81,9 +81,9 @@ public class Polynomial implements PolynomialInterface
 			co = Integer.parseInt(coeff);
 			if (sign) co *= -1;
 		}if(expo.equals("")){
-			if(var.equals("")) ex = 0;
-			else ex = 1;
-		} else ex = Integer.parseInt(expo);
+		if(var.equals("")) ex = 0;
+		else ex = 1;
+	} else ex = Integer.parseInt(expo);
 		if(var.equals("")) var = "";
 		insertSortedNode(new Node(co,ex,var));
 		this.degree = Math.max(this.degree,ex);
