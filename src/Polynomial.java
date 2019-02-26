@@ -30,6 +30,7 @@ public class Polynomial implements PolynomialInterface
 		termPairs = new LinkedHashMap<>();
 	}
 
+	@Deprecated
 	@SuppressWarnings("unused")
 	private Polynomial(Node newHead)
 	{
@@ -79,6 +80,7 @@ public class Polynomial implements PolynomialInterface
 			if(sign) co = -1;
 		} else {
 			co = Integer.parseInt(coeff);
+			if(co == 0) return;
 			if (sign) co *= -1;
 		}if(expo.equals("")){
 		if(var.equals("")) ex = 0;
@@ -124,10 +126,10 @@ public class Polynomial implements PolynomialInterface
 		Node curr = this.head;
 		int i = 0;
 		while(curr != null){
-			if(i == index) return curr;
+			if(i == index) break;
 			i++; curr = curr.next;
 		}
-		return null;
+		return curr;
 	}
 
 	public int getDegree()
