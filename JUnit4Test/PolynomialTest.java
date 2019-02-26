@@ -49,7 +49,7 @@ public class PolynomialTest
 		polynomial = new Polynomial(poly);
 	}
 
-
+	@Ignore
 	@Test
 	public void testInvalidCharacter2()
 	{
@@ -84,7 +84,7 @@ public class PolynomialTest
 
 	}
 
-	@Ignore
+
 	@Test
 	public void testPoly3()
 	{
@@ -328,7 +328,23 @@ public class PolynomialTest
 	@Test
 	public void testSubtract1()
 	{
-		String poly = "";
+		String poly = "-x^3-x^5+34";
+		String poly2 = "-x";
+		polynomial = new Polynomial(poly);
+		polynomial1 = new Polynomial(poly2);
+		result = polynomial.subtract(polynomial1);
+		assertEquals("-x^5-x^3-x+34", result.toString());
+	}
+
+	@Test
+	public void testSubtract2()
+	{
+		String  poly = "-x^3-x^5+34";
+		String poly2 = "-x^5+x^2-8x^3-34";
+		polynomial = new Polynomial(poly);
+		polynomial1 = new Polynomial(poly2);
+		result = polynomial.subtract(polynomial1);
+		assertEquals("7x^3+x^2+68",result.toString());
 	}
 
 
