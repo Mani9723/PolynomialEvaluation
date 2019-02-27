@@ -220,6 +220,64 @@ public class PolynomialTest
 	}
 
 	@Test
+	public void testPolyType()
+	{
+		assertEquals("Linear Monomial",new Polynomial("3x").getPolynomialType());
+	}
+
+	@Test
+	public void testPolyType1()
+	{
+		assertEquals("A 11th degree Polynomial",
+				new Polynomial("3x^11+34x-12x^3+9x^4+65").getPolynomialType());
+	}
+
+	@Test
+	public void testPolyType2()
+	{
+		assertEquals("Quintic Polynomial",
+				new Polynomial("3x^5+34x-12x^3+9x^4+65").getPolynomialType());
+	}
+
+	@Test
+	public void testPolyType3()
+	{
+		assertEquals("A 15th degree Trinomial",
+				new Polynomial("3x^15+34x-12x^3").getPolynomialType());
+	}
+
+	@Test
+	public void testPolyType4()
+	{
+		assertEquals("Octic Binomial",
+				new Polynomial("4x^8+4").getPolynomialType());
+	}
+	@Test
+	public void testPolyType5()
+	{
+		assertEquals("Nonic Monomial",
+				new Polynomial("4x^9").getPolynomialType());
+	}
+	@Test
+	public void testPolyType6()
+	{
+		assertEquals("Cubic Polynomial",
+				new Polynomial("4x^3+4x+5x^2+45").getPolynomialType());
+	}
+	@Test
+	public void testPolyType7()
+	{
+		assertEquals("Sextic Binomial",
+				new Polynomial("4x^6+4").getPolynomialType());
+	}
+	@Test
+	public void testPolyType8()
+	{
+		assertEquals("Constant Monomial",
+				new Polynomial("4").getPolynomialType());
+	}
+
+	@Test
 	public void testAdd1()
 	{
 		String poly1 = "5x^5+3x^2+4x+8";
