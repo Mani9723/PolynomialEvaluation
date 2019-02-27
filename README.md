@@ -1,5 +1,5 @@
 # PolynomialEvaluation
-This project simples defines a polynomial
+This project simply defines a polynomial
 ##Features
 - Currently only support a single variable polynomial.
 - Degree of Polynomial
