@@ -1,7 +1,4 @@
-import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.*;
@@ -22,6 +19,14 @@ public class PolynomialTest
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
+
+	@Before
+	public void initObjects()
+	{
+		polynomial = null;
+		polynomial1 = null;
+		result = null;
+	}
 
 	@Test
 	public void testEmptyPoly()
@@ -347,6 +352,32 @@ public class PolynomialTest
 		assertEquals("7x^3+x^2+68",result.toString());
 	}
 
+	@Test
+	public void testSubtract3()
+	{
+		polynomial = new Polynomial("-21x+34");
+		polynomial1 = new Polynomial("21x-34");
+		result = polynomial.subtract(polynomial1);
+		assertEquals("-42x+68",result.toString());
+	}
+
+	@Test
+	public void testSubtract4()
+	{
+		polynomial = new Polynomial("-21x-34");
+		polynomial1 = new Polynomial("21x-34");
+		result = polynomial.subtract(polynomial1);
+		assertEquals("-42x",result.toString());
+	}
+
+	@Test
+	public void testSubtract5()
+	{
+		polynomial = new Polynomial("21x-34");
+		polynomial1 = new Polynomial("21x-34");
+		result = polynomial.subtract(polynomial1);
+		assertEquals("0",result.toString());
+	}
 
 
 	@After
