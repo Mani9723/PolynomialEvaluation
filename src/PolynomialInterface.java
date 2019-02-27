@@ -2,7 +2,7 @@
  * PolynomialEvaluation
  *
  * This interface defines
- *
+ * basic actions that can be taken on a polynomial
  * @author Mani Shah
  * Date:  12/25/2018
  * Time:  19:00

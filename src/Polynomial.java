@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -18,6 +19,10 @@ public class Polynomial implements PolynomialInterface
 	private int terms;
 	private String originalPolynomial;
 
+	private String[] polyByTerms = {"Monomial","Binomial","Trinomial","Polynomial"};
+	private String[] polyByDegree = {"Constant","Linear","Quadratic","Cubic",
+			"Quartic","Quintic","Sextic","Septic","Octic","Nonic","Decic"};
+
 	private LinkedHashMap<Pair,Integer> termPairs;
 
 	public Polynomial(String poly)
@@ -29,15 +34,6 @@ public class Polynomial implements PolynomialInterface
 		readPoly(poly.replaceAll(" ",""));
 		this.termPairs = new LinkedHashMap<>();
 	}
-
-//	@Deprecated
-//	@SuppressWarnings("unused")
-//	private Polynomial(Node newHead)
-//	{
-//		this.head = newHead;
-//		this.degree = newHead.expo;
-//		//this.terms = termPairs.size();
-//	}
 
 	@SuppressWarnings("StringConcatenationInLoop")
 	private void readPoly(String poly)
@@ -237,6 +233,20 @@ public class Polynomial implements PolynomialInterface
 		}
 		sum = new Polynomial(result.toString());
 		return sum;
+	}
+
+	public String getPolynomialType()
+	{
+		String type;
+		if(this.degree > 10 && this.terms > 4){
+			type = "A " + this.degree +"th degree Polynomial";
+		}else if(this.degree < 10 && this.terms > 4 ){
+			type = polyByDegree[this.degree] + " " + polyByTerms[3];
+		}else if(this.degree > 10){
+			type = "A " + this.degree + "th degree " + polyByTerms[this.terms-1];
+		} else
+			type = polyByDegree[this.degree] + " " + polyByTerms[this.terms-1];
+		return type;
 	}
 
 	public void deletePolynomial()
