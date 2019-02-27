@@ -24,20 +24,20 @@ public class Polynomial implements PolynomialInterface
 	{
 		if(poly.equals(""))
 			throw new PolynomialFormatError("Empty Polynomial");
-		originalPolynomial = new String(poly);
-		degree = 0;
+		this.originalPolynomial = poly;
+		this.degree = 0;
 		readPoly(poly.replaceAll(" ",""));
-		termPairs = new LinkedHashMap<>();
+		this.termPairs = new LinkedHashMap<>();
 	}
 
-	@Deprecated
-	@SuppressWarnings("unused")
-	private Polynomial(Node newHead)
-	{
-		this.head = newHead;
-		this.degree = newHead.expo;
-		//this.terms = termPairs.size();
-	}
+//	@Deprecated
+//	@SuppressWarnings("unused")
+//	private Polynomial(Node newHead)
+//	{
+//		this.head = newHead;
+//		this.degree = newHead.expo;
+//		//this.terms = termPairs.size();
+//	}
 
 	@SuppressWarnings("StringConcatenationInLoop")
 	private void readPoly(String poly)
@@ -279,7 +279,7 @@ public class Polynomial implements PolynomialInterface
 			curr = curr.next;
 			if(curr != null && (curr.coeff >= 0)) poly.append("+");
 		}
-		return poly.toString();
+		return head == null ? "0" : poly.toString();
 	}
 
 	protected static class Node
