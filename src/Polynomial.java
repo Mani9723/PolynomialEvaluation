@@ -145,7 +145,8 @@ public class Polynomial implements PolynomialInterface
 	@Override
 	public Polynomial subtract(Polynomial other)
 	{
-		preparePolys(other);
+		negatePolynomial(other);
+		populateHashMap(this,other);
 		Polynomial difference = calcDiff();
 		termPairs.clear();
 		return difference;
@@ -194,6 +195,8 @@ public class Polynomial implements PolynomialInterface
 		secCurr = two.head;
 
 		while(firstCurr != null){
+			if(secCurr == null)
+				break;
 			if(firstCurr.expo < secCurr.expo){
 				termPairs.put(new Pair(secCurr,null),secCurr.expo);
 				secCurr = secCurr.next;
@@ -206,33 +209,33 @@ public class Polynomial implements PolynomialInterface
 				secCurr = secCurr.next;
 			}
 		}
+		while(firstCurr != null){
+			termPairs.put(new Pair(firstCurr,null),firstCurr.expo);
+			firstCurr = firstCurr.next;
+		}
 		while(secCurr != null){
 			termPairs.put(new Pair(secCurr,null),secCurr.expo);
 			secCurr = secCurr.next;
 		}
 	}
 
+	private void negatePolynomial(Polynomial polynomial)
+	{
+		Node head = polynomial.head;
+		Node curr;
+
+		curr = head;
+		while (curr != null){
+			if(curr.coeff != 0)
+				curr.coeff = curr.coeff * -1;
+			curr = curr.next;
+		}
+
+	}
+
 	private Polynomial calcDiff()
 	{
-		Polynomial sum;
-		Node subFirst, subSecond;
-		StringBuilder result = new StringBuilder();
-
-		for (Map.Entry<Pair, Integer> pairs : termPairs.entrySet()) {
-			subFirst = pairs.getKey().a;
-			subSecond = pairs.getKey().b;
-			if (subSecond == null) {
-				appendSign(subFirst, result);
-				result.append(termToString(subFirst));
-			} else {
-				int coefSum = subFirst.coeff - subSecond.coeff;
-				if (result.length() != 0 && coefSum >= 0) result.append("+");
-				result.append(coefSum).append(subFirst.var).append("^")
-						.append(subFirst.expo);
-			}
-		}
-		sum = new Polynomial(result.toString());
-		return sum;
+		return calcSum();
 	}
 
 	public String getPolynomialType()
@@ -292,11 +295,11 @@ public class Polynomial implements PolynomialInterface
 		return head == null ? "0" : poly.toString();
 	}
 
-	protected static class Node
+	private static class Node
 	{
-		protected final int coeff;
-		protected final int expo;
-		protected final String var;
+		private int coeff;
+		private int expo;
+		private String var;
 
 		private Node next;
 
