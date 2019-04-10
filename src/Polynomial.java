@@ -1,6 +1,4 @@
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * PolynomialEvaluation
@@ -31,12 +29,17 @@ public class Polynomial implements PolynomialInterface
 			throw new PolynomialFormatError("Empty Polynomial");
 		this.originalPolynomial = poly;
 		this.degree = 0;
-		readPoly(poly.replaceAll(" ",""));
+		processPoly(poly.replaceAll(" ",""));
 		this.termPairs = new LinkedHashMap<>();
 	}
 
+	Polynomial()
+	{
+
+	}
+
 	@SuppressWarnings("StringConcatenationInLoop")
-	private void readPoly(String poly)
+	private void processPoly(String poly)
 	{
 		boolean sign = false, expo = false;
 		String coeff = "", expon = "", var = "";
@@ -130,7 +133,12 @@ public class Polynomial implements PolynomialInterface
 
 	public int getDegree()
 	{
-		return degree;
+		return this.degree;
+	}
+
+	public int getTerms()
+	{
+		return this.terms;
 	}
 
 	@Override
@@ -152,6 +160,94 @@ public class Polynomial implements PolynomialInterface
 		return difference;
 	}
 
+	@Override
+	public Polynomial multiply(Polynomial other)
+	{
+		Polynomial product;
+
+		if(this.originalPolynomial.equals("1")) return other;
+		else if(other.originalPolynomial.equals("1")) return this;
+		else if(this.originalPolynomial.equals("0") || other.originalPolynomial.equals("0"))
+			return new Polynomial("0");
+		else {
+			product = this.terms <= other.terms ? calcProduct(this, other)
+					: calcProduct(other, this);
+			return simplify(product);
+		}
+	}
+
+	private Polynomial calcProduct(Polynomial multiplier,Polynomial multiplicand)
+	{
+		StringBuilder tempProduct = new StringBuilder("");
+		Node shortPoly = multiplier.head;
+		Node longPoly = multiplicand.head;
+		Node tempTerm;
+		//First Term
+		tempProduct.append(termToString(calcTermProduct(shortPoly,longPoly)));
+		longPoly = longPoly.next;
+
+		while(shortPoly != null){
+			while(longPoly != null){
+				tempTerm = calcTermProduct(shortPoly,longPoly);
+				appendSign(tempTerm,tempProduct);
+				tempProduct.append(termToString(tempTerm));
+				longPoly = longPoly.next;
+			}
+			longPoly = multiplicand.head;
+			shortPoly = shortPoly.next;
+		}
+
+		return new Polynomial(tempProduct.toString());
+	}
+
+	private Node calcTermProduct(Node termOne, Node termTwo)
+	{
+		int coeff;
+		int expo;
+		coeff = termOne.coeff*termTwo.coeff;
+		expo = termOne.expo+termTwo.expo;
+		return new Node(coeff,expo,getVarForMultiply(termOne,termTwo));
+	}
+
+	private String getVarForMultiply(Node first, Node second)
+	{
+		if(first.var.equals("") && !second.var.equals(""))
+			return second.var;
+		else if(!first.var.equals("") && second.var.equals(""))
+			return first.var;
+		else if(first.var.equals(second.var))
+			return first.var;
+		else return "";
+	}
+
+	private Polynomial simplify(Polynomial polynomial)
+	{
+		return groupLikeTerms(polynomial);
+	}
+
+	private Polynomial groupLikeTerms(Polynomial polynomial)
+	{
+		Polynomial answer = new Polynomial();
+		Node mainNode = polynomial.head;
+		Node tempNode = null;
+		HashMap<Integer,Node> similarTerms = new HashMap<>(polynomial.terms);
+
+		while(mainNode != null){
+			tempNode = mainNode;
+			mainNode = mainNode.next;
+			tempNode.next = null;
+			if(similarTerms.containsKey(tempNode.expo)) {
+				tempNode.coeff += similarTerms.get(tempNode.expo).coeff;
+				similarTerms.put(tempNode.expo,tempNode);
+			}
+			else
+				similarTerms.put(tempNode.expo, tempNode);
+			if(mainNode!= null && (tempNode.expo != mainNode.expo))
+				answer.insertSortedNode(tempNode);
+		}
+		answer.insertSortedNode(tempNode);
+		return answer;
+	}
 
 	private void preparePolys(Polynomial other)
 	{

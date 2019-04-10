@@ -25,5 +25,12 @@ public interface PolynomialInterface
 	 */
 	Polynomial subtract(Polynomial other);
 
+	/**
+	 * Defines the multiplication method for polynomials
+	 * @param other Multipicand
+	 * @return the product of two polynomials
+	 */
+	Polynomial multiply(Polynomial other);
+
 
 }
