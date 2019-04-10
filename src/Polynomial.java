@@ -229,6 +229,11 @@ public class Polynomial implements PolynomialInterface
 		return groupLikeTerms(polynomial);
 	}
 
+	public void simplify()
+	{
+		this.head = simplify(this).head;
+	}
+
 	private Polynomial groupLikeTerms(Polynomial polynomial)
 	{
 		Polynomial answer = new Polynomial();
