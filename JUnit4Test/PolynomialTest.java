@@ -542,15 +542,23 @@ public class PolynomialTest
 	public void testLessThan()
 	{
 		polynomial = new Polynomial("34x^4+2x^65");
-		polynomial1 = new Polynomial("2xil^4+3x^23");
+		polynomial1 = new Polynomial("2x^4+3x^23");
 		assertTrue(polynomial1.isLessThan(polynomial));
 	}
 	@Test
 	public void testGreaterThan()
 	{
 		polynomial = new Polynomial("34x^4+2x^65");
-		polynomial1 = new Polynomial("2xil^4+3x^23");
+		polynomial1 = new Polynomial("2x^4+3x^23");
 		assertTrue(polynomial.isGreaterThan(polynomial1));
+	}
+
+	@Test
+	public void testSimplyfy()
+	{
+		polynomial = new Polynomial("3x^3+7x^5+9x^3+89x^2+8x^5");
+		polynomial.simplify();
+		assertEquals("15x^5+12x^3+89x^2",polynomial.toString());
 	}
 
 	@After
