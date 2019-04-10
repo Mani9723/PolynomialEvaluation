@@ -146,7 +146,7 @@ public class PolynomialTest
 	{
 		String poly = "-x^2+23x+6x^2";
 		polynomial = new Polynomial(poly);
-	//	assertEquals(6,polynomial.getTerm(0).coeff);
+		//	assertEquals(6,polynomial.getTerm(0).coeff);
 
 	}
 	@Ignore
@@ -155,7 +155,7 @@ public class PolynomialTest
 	{
 		String poly = "-x^2+23x+6x^4";
 		polynomial = new Polynomial(poly);
-	//	assertEquals(2,polynomial.getTerm(1));
+		//	assertEquals(2,polynomial.getTerm(1));
 
 	}
 	@Ignore
@@ -164,7 +164,7 @@ public class PolynomialTest
 	{
 		String poly = "-x^2+23x+6x^2+33";
 		polynomial = new Polynomial(poly);
-	//	assertEquals(0,polynomial.getTerm(3).expo);
+		//	assertEquals(0,polynomial.getTerm(3).expo);
 
 	}
 	@Ignore
@@ -173,7 +173,7 @@ public class PolynomialTest
 	{
 		String poly = "-x^2+23x+6x^2+33";
 		polynomial= new Polynomial(poly);
-	//	assertEquals("",polynomial.getTerm(3).var);
+		//	assertEquals("",polynomial.getTerm(3).var);
 
 	}
 
@@ -465,6 +465,69 @@ public class PolynomialTest
 		polynomial1 = new Polynomial("34x^7+2x^9");
 		assertEquals("-2x^9-34x^7+1",
 				polynomial.subtract(polynomial1).toString());
+	}
+
+	@Test
+	public void testGetTerms()
+	{
+		polynomial = new Polynomial("3x^5+9x+23x^3+9");
+		assertEquals(4,polynomial.getTerms());
+	}
+
+	@Test
+	public void testMultiplication()
+	{
+		polynomial = new Polynomial("3x^3+2x^2+4x+8");
+		polynomial1 = new Polynomial("3x^3+2x^2+4x+8");
+		assertEquals("9x^6+12x^5+28x^4+64x^3+48x^2+64x+64",polynomial.multiply(polynomial1).toString());
+	}
+
+	@Test
+	public void testMultipliation1()
+	{
+		polynomial = new Polynomial("3x^56+23x^2+5");
+		polynomial1 = new Polynomial("32x^2");
+		assertEquals("96x^58+736x^4+160x^2",polynomial.multiply(polynomial1).toString());
+	}
+
+	@Test
+	public void testMultipliation2()
+	{
+		polynomial = new Polynomial("3x^56+23x^2+5");
+		polynomial1 = new Polynomial("1");
+		assertEquals(polynomial.toString(),polynomial.multiply(polynomial1).toString());
+	}
+
+	@Test
+	public void testMultipliation3()
+	{
+		polynomial = new Polynomial("3x^56+23x^2+5");
+		polynomial1 = new Polynomial("-1");
+		assertEquals("-3x^56-23x^2-5",polynomial.multiply(polynomial1).toString());
+	}
+
+	@Test
+	public void testMultipliation4()
+	{
+		polynomial1 = new Polynomial("3x^56+23x^2+5");
+		polynomial = new Polynomial("-1");
+		assertEquals("-3x^56-23x^2-5",polynomial.multiply(polynomial1).toString());
+	}
+
+	@Test
+	public void testMultipliation5()
+	{
+		polynomial1 = new Polynomial("3x^56+23x^2+5");
+		polynomial = new Polynomial("1");
+		assertEquals("3x^56+23x^2+5",polynomial.multiply(polynomial1).toString());
+	}
+
+	@Test
+	public void testMultipliation6()
+	{
+		polynomial1 = new Polynomial("3x^56+23x^2+5");
+		polynomial = new Polynomial("0");
+		assertEquals("0",polynomial.multiply(polynomial1).toString());
 	}
 
 
