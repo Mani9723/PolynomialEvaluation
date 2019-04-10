@@ -17,11 +17,12 @@ public class Polynomial implements PolynomialInterface
 	private Node head;
 	private int degree;
 	private int terms;
+
 	private String originalPolynomial;
-	private String sortedOriginalPoly;
 
 	private String[] polyByTerms;
 	private String[] polyByDegree;
+
 	private LinkedHashMap<Pair,Integer> termPairs;
 
 	Polynomial()
@@ -31,7 +32,6 @@ public class Polynomial implements PolynomialInterface
 				"Quartic", "Quintic", "Sextic", "Septic", "Octic", "Nonic", "Decic"};
 		this.termPairs = new LinkedHashMap<>();
 		this.degree = 0;
-		this.sortedOriginalPoly = "";
 	}
 
 	public Polynomial(String poly)
@@ -41,7 +41,6 @@ public class Polynomial implements PolynomialInterface
 			throw new PolynomialFormatError("Empty Polynomial");
 		this.originalPolynomial = poly;
 		processPoly(poly.replaceAll(" ",""));
-		this.sortedOriginalPoly = toString();
 	}
 
 	@SuppressWarnings("StringConcatenationInLoop")
@@ -159,7 +158,7 @@ public class Polynomial implements PolynomialInterface
 	@Override
 	public Polynomial subtract(Polynomial other)
 	{
-		negatePolynomial(other);
+		other.negatePolynomial();
 		populateHashMap(this,other);
 		Polynomial difference = calcDiff();
 		termPairs.clear();
@@ -202,7 +201,6 @@ public class Polynomial implements PolynomialInterface
 			longPoly = multiplicand.head;
 			shortPoly = shortPoly.next;
 		}
-
 		return new Polynomial(tempProduct.toString());
 	}
 
@@ -321,12 +319,12 @@ public class Polynomial implements PolynomialInterface
 		}
 	}
 
-	private void negatePolynomial(Polynomial polynomial)
+	private void negatePolynomial()
 	{
-		Node head = polynomial.head;
+		Node mainHead = head;
 		Node curr;
 
-		curr = head;
+		curr = mainHead;
 		while (curr != null){
 			if(curr.coeff != 0)
 				curr.coeff = curr.coeff * -1;
@@ -379,7 +377,7 @@ public class Polynomial implements PolynomialInterface
 
 	public boolean isEqual(Polynomial other)
 	{
-		return this.sortedOriginalPoly.equals(other.sortedOriginalPoly);
+		return this.toString().equals(other.toString());
 	}
 
 	public boolean isLessThan(Polynomial other)
