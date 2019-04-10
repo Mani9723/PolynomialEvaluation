@@ -530,6 +530,28 @@ public class PolynomialTest
 		assertEquals("0",polynomial.multiply(polynomial1).toString());
 	}
 
+	@Test
+	public void testEquality()
+	{
+		polynomial = new Polynomial("3x^4+9x");
+		polynomial1 = new Polynomial("9x+3x^4");
+		assertTrue(polynomial.isEqual(polynomial1));
+	}
+
+	@Test
+	public void testLessThan()
+	{
+		polynomial = new Polynomial("34x^4+2x^65");
+		polynomial1 = new Polynomial("2xil^4+3x^23");
+		assertTrue(polynomial1.isLessThan(polynomial));
+	}
+	@Test
+	public void testGreaterThan()
+	{
+		polynomial = new Polynomial("34x^4+2x^65");
+		polynomial1 = new Polynomial("2xil^4+3x^23");
+		assertTrue(polynomial.isGreaterThan(polynomial1));
+	}
 
 	@After
 	public void deleteList()
