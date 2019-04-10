@@ -25,7 +25,7 @@ public class Polynomial implements PolynomialInterface
 
 	private LinkedHashMap<Pair,Integer> termPairs;
 
-	Polynomial()
+	private Polynomial()
 	{
 		polyByTerms = new String[]{"Monomial","Binomial","Trinomial","Polynomial"};
 		polyByDegree = new String[]{"Constant", "Linear", "Quadratic", "Cubic",
@@ -330,7 +330,6 @@ public class Polynomial implements PolynomialInterface
 				curr.coeff = curr.coeff * -1;
 			curr = curr.next;
 		}
-
 	}
 
 	private Polynomial calcDiff()
@@ -357,7 +356,6 @@ public class Polynomial implements PolynomialInterface
 		this.head = null;
 		System.out.println("List deleted");
 	}
-
 
 	private String termToString(Node term)
 	{
