@@ -40,11 +40,11 @@ public class Polynomial implements PolynomialInterface
 		if(poly.equals(""))
 			throw new PolynomialFormatError("Empty Polynomial");
 		this.originalPolynomial = poly;
-		processPoly(poly.replaceAll(" ",""));
+		parsePolynomial(poly.replaceAll(" ",""));
 	}
 
 	@SuppressWarnings("StringConcatenationInLoop")
-	private void processPoly(String poly)
+	private void parsePolynomial(String poly)
 	{
 		boolean sign = false, expo = false;
 		String coeff = "", expon = "", var = "";
