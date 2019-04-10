@@ -1,4 +1,6 @@
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * PolynomialEvaluation
@@ -16,26 +18,30 @@ public class Polynomial implements PolynomialInterface
 	private int degree;
 	private int terms;
 	private String originalPolynomial;
+	private String sortedOriginalPoly;
 
-	private String[] polyByTerms = {"Monomial","Binomial","Trinomial","Polynomial"};
-	private String[] polyByDegree = {"Constant","Linear","Quadratic","Cubic",
-			"Quartic","Quintic","Sextic","Septic","Octic","Nonic","Decic"};
-
+	private String[] polyByTerms;
+	private String[] polyByDegree;
 	private LinkedHashMap<Pair,Integer> termPairs;
-
-	public Polynomial(String poly)
-	{
-		if(poly.equals(""))
-			throw new PolynomialFormatError("Empty Polynomial");
-		this.originalPolynomial = poly;
-		this.degree = 0;
-		processPoly(poly.replaceAll(" ",""));
-		this.termPairs = new LinkedHashMap<>();
-	}
 
 	Polynomial()
 	{
+		polyByTerms = new String[]{"Monomial","Binomial","Trinomial","Polynomial"};
+		polyByDegree = new String[]{"Constant", "Linear", "Quadratic", "Cubic",
+				"Quartic", "Quintic", "Sextic", "Septic", "Octic", "Nonic", "Decic"};
+		this.termPairs = new LinkedHashMap<>();
+		this.degree = 0;
+		this.sortedOriginalPoly = "";
+	}
 
+	public Polynomial(String poly)
+	{
+		this();
+		if(poly.equals(""))
+			throw new PolynomialFormatError("Empty Polynomial");
+		this.originalPolynomial = poly;
+		processPoly(poly.replaceAll(" ",""));
+		this.sortedOriginalPoly = toString();
 	}
 
 	@SuppressWarnings("StringConcatenationInLoop")
@@ -117,11 +123,11 @@ public class Polynomial implements PolynomialInterface
 		}
 	}
 
+	@SuppressWarnings({"unused", "UnusedReturnValue"})
 	public Node getTerm(int index)
 	{
-		if(index >= this.terms || index < 0){
+		if(index >= this.terms || index < 0)
 			throw new IndexOutOfBoundsException("Invalid Term");
-		}
 		Node curr = this.head;
 		int i = 0;
 		while(curr != null){
@@ -178,7 +184,7 @@ public class Polynomial implements PolynomialInterface
 
 	private Polynomial calcProduct(Polynomial multiplier,Polynomial multiplicand)
 	{
-		StringBuilder tempProduct = new StringBuilder("");
+		StringBuilder tempProduct = new StringBuilder();
 		Node shortPoly = multiplier.head;
 		Node longPoly = multiplicand.head;
 		Node tempTerm;
@@ -371,7 +377,22 @@ public class Polynomial implements PolynomialInterface
 		return ans;
 	}
 
+	public boolean isEqual(Polynomial other)
+	{
+		return this.sortedOriginalPoly.equals(other.sortedOriginalPoly);
+	}
 
+	public boolean isLessThan(Polynomial other)
+	{
+		return this.degree < other.degree;
+	}
+
+	public boolean isGreaterThan(Polynomial other)
+	{
+		return this.degree > other.degree;
+	}
+
+	@SuppressWarnings("StringOperationCanBeSimplified")
 	@Override
 	public String toString()
 	{
