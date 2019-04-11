@@ -87,10 +87,12 @@ public class Polynomial implements PolynomialInterface
 			if(co == 0) return;
 			if (sign) co *= -1;
 		}if(expo.equals("")){
-		if(var.equals("")) ex = 0;
-		else ex = 1;
-	} else ex = Integer.parseInt(expo);
-		if(var.equals("")) var = "";
+			if(var.equals("")) ex = 0;
+			else ex = 1;
+		} else
+			ex = Integer.parseInt(expo);
+		if(var.equals(""))
+			var = "";
 		insertSortedNode(new Node(co,ex,var));
 		this.degree = Math.max(this.degree,ex);
 		this.terms++;
@@ -206,7 +208,7 @@ public class Polynomial implements PolynomialInterface
 
 	private Node calcTermProduct(Node termOne, Node termTwo)
 	{
-		int coeff;
+		double coeff;
 		int expo;
 		coeff = termOne.coeff*termTwo.coeff;
 		expo = termOne.expo+termTwo.expo;
@@ -268,6 +270,7 @@ public class Polynomial implements PolynomialInterface
 	private Polynomial calcSum()
 	{
 		Polynomial sum;
+		double coefSum;
 		Node addend, auguend;
 		StringBuilder result = new StringBuilder();
 
@@ -278,7 +281,7 @@ public class Polynomial implements PolynomialInterface
 				appendSign(addend,result);
 				result.append(termToString(addend));
 			}else{
-				int coefSum = addend.coeff + auguend.coeff;
+				coefSum = addend.coeff + auguend.coeff;
 				if(result.length() != 0 && coefSum >= 0) result.append("+");
 				result.append(coefSum).append(addend.var)
 						.append("^").append(addend.expo);
@@ -356,6 +359,18 @@ public class Polynomial implements PolynomialInterface
 		return type;
 	}
 
+	public double evaluate(double value)
+	{
+		double result = 0;
+		Node currNode = this.head;
+
+		while(currNode != null){
+			result += currNode.coeff*(Math.pow(value,currNode.expo));
+			currNode = currNode.next;
+		}
+		return result;
+	}
+
 	public void deletePolynomial()
 	{
 		this.head = null;
@@ -415,13 +430,13 @@ public class Polynomial implements PolynomialInterface
 
 	private static class Node
 	{
-		private int coeff;
+		private double coeff;
 		private int expo;
 		private String var;
 
 		private Node next;
 
-		private Node(int co, int ex, String vr)
+		private Node(double co, int ex, String vr)
 		{
 			this.coeff = co;
 			this.expo = ex;
