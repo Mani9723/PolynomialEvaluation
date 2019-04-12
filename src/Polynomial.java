@@ -39,8 +39,8 @@ public class Polynomial implements PolynomialInterface
 		this();
 		if(poly.equals(""))
 			throw new PolynomialFormatError("Empty Polynomial");
-		this.originalPolynomial = poly;
 		parsePolynomial(poly.replaceAll(" ",""));
+		this.originalPolynomial = poly;
 	}
 
 	@SuppressWarnings("StringConcatenationInLoop")
@@ -160,6 +160,9 @@ public class Polynomial implements PolynomialInterface
 	@Override
 	public Polynomial subtract(Polynomial other)
 	{
+		if(isEqual(other)){
+			return new Polynomial("0");
+		}
 		other.negatePolynomial();
 		populateHashMap(this,other);
 		Polynomial difference = calcDiff();
@@ -208,7 +211,7 @@ public class Polynomial implements PolynomialInterface
 
 	private Node calcTermProduct(Node termOne, Node termTwo)
 	{
-		double coeff;
+		int coeff;
 		int expo;
 		coeff = termOne.coeff*termTwo.coeff;
 		expo = termOne.expo+termTwo.expo;
@@ -270,7 +273,7 @@ public class Polynomial implements PolynomialInterface
 	private Polynomial calcSum()
 	{
 		Polynomial sum;
-		double coefSum;
+		int coefSum;
 		Node addend, auguend;
 		StringBuilder result = new StringBuilder();
 
@@ -430,13 +433,13 @@ public class Polynomial implements PolynomialInterface
 
 	private static class Node
 	{
-		private double coeff;
+		private int coeff;
 		private int expo;
 		private String var;
 
 		private Node next;
 
-		private Node(double co, int ex, String vr)
+		private Node(int co, int ex, String vr)
 		{
 			this.coeff = co;
 			this.expo = ex;
