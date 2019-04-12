@@ -23,11 +23,11 @@ public class Polynomial implements PolynomialInterface
 	private String[] polyByTerms;
 	private String[] polyByDegree;
 
-	private LinkedHashMap<Pair,Integer> termPairs;
+	private LinkedHashMap<Pair, Integer> termPairs;
 
 	private Polynomial()
 	{
-		polyByTerms = new String[]{"Monomial","Binomial","Trinomial","Polynomial"};
+		polyByTerms = new String[]{"Monomial", "Binomial", "Trinomial", "Polynomial"};
 		polyByDegree = new String[]{"Constant", "Linear", "Quadratic", "Cubic",
 				"Quartic", "Quintic", "Sextic", "Septic", "Octic", "Nonic", "Decic"};
 		this.termPairs = new LinkedHashMap<>();
@@ -37,10 +37,10 @@ public class Polynomial implements PolynomialInterface
 	public Polynomial(String poly)
 	{
 		this();
-		if(poly.equals(""))
+		if (poly.equals(""))
 			throw new PolynomialFormatError("Empty Polynomial");
-		parsePolynomial(poly.replaceAll(" ",""));
 		this.originalPolynomial = poly;
+		parsePolynomial(poly.replaceAll(" ", ""));
 	}
 
 	@SuppressWarnings("StringConcatenationInLoop")
@@ -188,25 +188,24 @@ public class Polynomial implements PolynomialInterface
 
 	private Polynomial calcProduct(Polynomial multiplier,Polynomial multiplicand)
 	{
-		StringBuilder tempProduct = new StringBuilder();
+		Polynomial product = new Polynomial();
 		Node shortPoly = multiplier.head;
 		Node longPoly = multiplicand.head;
 		Node tempTerm;
 		//First Term
-		tempProduct.append(termToString(calcTermProduct(shortPoly,longPoly)));
+		product.insertSortedNode(calcTermProduct(shortPoly,longPoly));
 		longPoly = longPoly.next;
 
 		while(shortPoly != null){
 			while(longPoly != null){
 				tempTerm = calcTermProduct(shortPoly,longPoly);
-				appendSign(tempTerm,tempProduct);
-				tempProduct.append(termToString(tempTerm));
+				product.insertSortedNode(tempTerm);
 				longPoly = longPoly.next;
 			}
 			longPoly = multiplicand.head;
 			shortPoly = shortPoly.next;
 		}
-		return new Polynomial(tempProduct.toString());
+		return product;
 	}
 
 	private Node calcTermProduct(Node termOne, Node termTwo)
@@ -272,28 +271,25 @@ public class Polynomial implements PolynomialInterface
 
 	private Polynomial calcSum()
 	{
-		Polynomial sum;
+		Polynomial sum = new Polynomial();
 		int coefSum;
 		Node addend, auguend;
-		StringBuilder result = new StringBuilder();
 
 		for(Map.Entry<Pair,Integer> pairs : termPairs.entrySet()){
 			addend = pairs.getKey().a;
 			auguend = pairs.getKey().b;
 			if(auguend == null){
-				appendSign(addend,result);
-				result.append(termToString(addend));
+				sum.insertSortedNode(new Node(addend.coeff,addend.expo,addend.var));
 			}else{
 				coefSum = addend.coeff + auguend.coeff;
-				if(result.length() != 0 && coefSum >= 0) result.append("+");
-				result.append(coefSum).append(addend.var)
-						.append("^").append(addend.expo);
+				sum.insertSortedNode(new Node(coefSum,addend.expo,addend.var));
 			}
 		}
-		sum = new Polynomial(result.toString());
 		return sum;
 	}
 
+	@Deprecated
+	@SuppressWarnings("unused")
 	private void appendSign(Node node, StringBuilder result)
 	{
 		if(result.length() != 0 && node.coeff >= 0) result.append("+");
@@ -380,6 +376,8 @@ public class Polynomial implements PolynomialInterface
 		System.out.println("List deleted");
 	}
 
+	@Deprecated
+	@SuppressWarnings("unused")
 	private String termToString(Node term)
 	{
 		String ans = "";
