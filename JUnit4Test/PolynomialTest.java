@@ -561,6 +561,22 @@ public class PolynomialTest
 		assertEquals("15x^5+12x^3+89x^2",polynomial.toString());
 	}
 
+	@Test
+	public void testEvalutate()
+	{
+		polynomial = new Polynomial("4x^2+5x+9");
+		//System.out.println(polynomial.evaluate(1));
+		assertEquals(18,polynomial.evaluate(1),0.001);
+	}
+	@Test
+	public void testEvalutate1()
+	{
+		polynomial = new Polynomial("4x^2+5x+9");
+		assertEquals(35,polynomial.evaluate(2),0.001);
+	}
+
+
+
 	@After
 	public void deleteList()
 	{
