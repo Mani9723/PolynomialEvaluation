@@ -153,7 +153,7 @@ public class Polynomial implements PolynomialInterface
 	{
 		preparePolys(other);
 		Polynomial result = calcSum();
-		termPairs.clear();
+		clearLinkedHashMap();
 		return result;
 	}
 
@@ -166,7 +166,7 @@ public class Polynomial implements PolynomialInterface
 		other.negatePolynomial();
 		populateHashMap(this,other);
 		Polynomial difference = calcDiff();
-		termPairs.clear();
+		clearLinkedHashMap();
 		return difference;
 	}
 
@@ -184,6 +184,11 @@ public class Polynomial implements PolynomialInterface
 					: calcProduct(other, this);
 			return simplify(product);
 		}
+	}
+
+	private void clearLinkedHashMap()
+	{
+		termPairs.clear();
 	}
 
 	private Polynomial calcProduct(Polynomial multiplier,Polynomial multiplicand)
@@ -313,7 +318,7 @@ public class Polynomial implements PolynomialInterface
 				firstCurr = firstCurr.next;
 				secCurr = secCurr.next;
 			}
-		}
+		}//add remaining terms
 		while(firstCurr != null){
 			termPairs.put(new Pair(firstCurr,null),firstCurr.expo);
 			firstCurr = firstCurr.next;
