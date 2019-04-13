@@ -191,15 +191,13 @@ public class Polynomial implements PolynomialInterface
 		Polynomial product = new Polynomial();
 		Node shortPoly = multiplier.head;
 		Node longPoly = multiplicand.head;
-		Node tempTerm;
-		//First Term
+
 		product.insertSortedNode(calcTermProduct(shortPoly,longPoly));
 		longPoly = longPoly.next;
 
 		while(shortPoly != null){
 			while(longPoly != null){
-				tempTerm = calcTermProduct(shortPoly,longPoly);
-				product.insertSortedNode(tempTerm);
+				product.insertSortedNode(calcTermProduct(shortPoly,longPoly));
 				longPoly = longPoly.next;
 			}
 			longPoly = multiplicand.head;

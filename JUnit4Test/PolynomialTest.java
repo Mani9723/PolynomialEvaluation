@@ -565,7 +565,6 @@ public class PolynomialTest
 	public void testEvalutate()
 	{
 		polynomial = new Polynomial("4x^2+5x+9");
-		//System.out.println(polynomial.evaluate(1));
 		assertEquals(18,polynomial.evaluate(1),0.001);
 	}
 	@Test
@@ -573,6 +572,13 @@ public class PolynomialTest
 	{
 		polynomial = new Polynomial("4x^2+5x+9");
 		assertEquals(35,polynomial.evaluate(2),0.001);
+	}
+
+	@Test
+	public void testEvaluate2()
+	{
+		polynomial = new Polynomial("4x^2-9x^3+10");
+		assertEquals(98,polynomial.evaluate(-2),0.005);
 	}
 
 
