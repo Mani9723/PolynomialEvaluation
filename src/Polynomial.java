@@ -20,8 +20,8 @@ public class Polynomial implements PolynomialInterface
 
 	private String originalPolynomial;
 
-	private String[] polyByTerms;
-	private String[] polyByDegree;
+	private static String[] polyByTerms;
+	private static String[] polyByDegree;
 
 	private LinkedHashMap<Pair, Integer> termPairs;
 
@@ -160,9 +160,7 @@ public class Polynomial implements PolynomialInterface
 	@Override
 	public Polynomial subtract(Polynomial other)
 	{
-		if(isEqual(other)){
-			return new Polynomial("0");
-		}
+		if(isEqual(other)) return new Polynomial("0");
 		other.negatePolynomial();
 		populateHashMap(this,other);
 		Polynomial difference = calcDiff();
@@ -285,7 +283,8 @@ public class Polynomial implements PolynomialInterface
 				sum.insertSortedNode(new Node(addend.coeff,addend.expo,addend.var));
 			}else{
 				coefSum = addend.coeff + auguend.coeff;
-				sum.insertSortedNode(new Node(coefSum,addend.expo,addend.var));
+				if(coefSum != 0)
+					sum.insertSortedNode(new Node(coefSum, addend.expo, addend.var));
 			}
 		}
 		return sum;
@@ -450,8 +449,8 @@ public class Polynomial implements PolynomialInterface
 
 	private static class Pair
 	{
-		Node a;
-		Node b;
+		private Node a;
+		private Node b;
 		private Pair(Node first, Node second){
 			a = first;
 			b = second;

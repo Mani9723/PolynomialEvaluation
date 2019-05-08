@@ -89,7 +89,6 @@ public class PolynomialTest
 
 	}
 
-
 	@Test
 	public void testPoly3()
 	{
@@ -104,8 +103,6 @@ public class PolynomialTest
 		String poly = "12x^3+123-33x^5";
 		polynomial = new Polynomial(poly);
 		assertEquals("-33x^5+12x^3+123",polynomial.toString());
-
-
 	}
 	@Test
 	public void testPoly5()
@@ -581,7 +578,22 @@ public class PolynomialTest
 		assertEquals(98,polynomial.evaluate(-2),0.005);
 	}
 
+	@Test
+	public void testSimplify2()
+	{
+		polynomial = new Polynomial("3x^3+x^3+43x-2x^3");
+		polynomial.simplify();
+		assertEquals("2x^3+43x",polynomial.toString());
+	}
 
+	@Test
+	public void testMultiVariable()
+	{
+		polynomial = new Polynomial("3x^2 + 4y^2 + y - x");
+		polynomial1 = new Polynomial("5x^2 + 4y^2 + y - x");
+		result = polynomial.add(polynomial1);
+		assertEquals("8x^2+8y^2+2y-2x", result.toString());
+	}
 
 	@After
 	public void deleteList()
