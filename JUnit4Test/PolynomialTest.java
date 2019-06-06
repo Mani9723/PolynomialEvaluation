@@ -595,6 +595,26 @@ public class PolynomialTest
 		assertEquals("8x^2+8y^2+2y-2x", result.toString());
 	}
 
+	@Test
+	public void testMultiVariable2()
+	{
+		polynomial = new Polynomial("3x^6+2x^5+6y^3-8x^2");
+		polynomial1 = new Polynomial("5x^7+6x^5+9x^3-7y");
+		result = polynomial.add(polynomial1);
+		assertEquals("5x^7+3x^6+8x^5+9x^3+6y^3-8x^2-7y",result.toString());
+
+	}
+
+	@Test
+	public void testMultiVariable3()
+	{
+		polynomial = new Polynomial("5x^6+7y^2");
+		polynomial1 = new Polynomial("7y^6-8x^2");
+		result = polynomial.add(polynomial1);
+		assertEquals("7y^6+5x^6-8x^2+7y^2",result.toString());
+	}
+
+
 	@After
 	public void deleteList()
 	{

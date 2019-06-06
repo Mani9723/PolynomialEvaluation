@@ -20,6 +20,7 @@ public class Polynomial implements PolynomialInterface
 
 	private String originalPolynomial;
 
+	private String[] multiVars;
 	private static String[] polyByTerms;
 	private static String[] polyByDegree;
 
@@ -43,6 +44,13 @@ public class Polynomial implements PolynomialInterface
 		parsePolynomial(poly.replaceAll(" ", ""));
 	}
 
+	public Polynomial(String poly, String...variables)
+	{
+		this(poly);
+		multiVars = new String[variables.length];
+		System.arraycopy(variables,0,multiVars,0,variables.length);
+	}
+
 	@SuppressWarnings("StringConcatenationInLoop")
 	private void parsePolynomial(String poly)
 	{
@@ -54,7 +62,8 @@ public class Polynomial implements PolynomialInterface
 				else coeff += poly.charAt(i);
 				continue;
 			}if(Character.isLetter(poly.charAt(i)) && !expo){
-				var = String.valueOf(poly.charAt(i)); continue;
+				var = String.valueOf(poly.charAt(i));
+				continue;
 			}if(poly.charAt(i) == '^'){
 				expo = true; continue;
 			}if(poly.charAt(i) == '-'){
@@ -313,7 +322,12 @@ public class Polynomial implements PolynomialInterface
 				termPairs.put(new Pair(firstCurr,null),firstCurr.expo);
 				firstCurr = firstCurr.next;
 			}else{
-				termPairs.put(new Pair(firstCurr,secCurr),firstCurr.expo);
+				if(firstCurr.var.equals(secCurr.var)) {
+					termPairs.put(new Pair(firstCurr, secCurr), firstCurr.expo);
+				}else{
+					termPairs.put(new Pair(firstCurr,null),firstCurr.expo);
+					termPairs.put(new Pair(secCurr,null),secCurr.expo);
+				}
 				firstCurr = firstCurr.next;
 				secCurr = secCurr.next;
 			}
@@ -326,6 +340,7 @@ public class Polynomial implements PolynomialInterface
 			termPairs.put(new Pair(secCurr,null),secCurr.expo);
 			secCurr = secCurr.next;
 		}
+		//THis method is still not ready for work. FIX THIS YOU RETARD
 	}
 
 	private void negatePolynomial()
@@ -382,6 +397,8 @@ public class Polynomial implements PolynomialInterface
 	@SuppressWarnings("unused")
 	private String termToString(Node term)
 	{
+		if(term == null)
+			return null;
 		String ans = "";
 		if(term.coeff != 0) {
 			if (term.coeff == -1 && !term.var.equals(""))
