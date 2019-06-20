@@ -608,11 +608,12 @@ public class PolynomialTest
 	@Test
 	public void testMultiVariable3()
 	{
-		polynomial = new Polynomial("5x^6+7y^2");
-		polynomial1 = new Polynomial("7y^6-8x^2");
+		polynomial = new Polynomial("5x^6+8y^2");
+		polynomial1 = new Polynomial("7y^6-7x^2");
 		result = polynomial.add(polynomial1);
-		assertEquals("7y^6+5x^6-8x^2+7y^2",result.toString());
+		assertEquals("7y^6+5x^6-7x^2+8y^2",result.toString());
 	}
+
 
 
 	@After
