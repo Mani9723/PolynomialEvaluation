@@ -1,6 +1,8 @@
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 
+import java.util.*;
+
 import static org.junit.Assert.*;
 
 /**
@@ -609,9 +611,44 @@ public class PolynomialTest
 	public void testMultiVariable3()
 	{
 		polynomial = new Polynomial("5x^6+8y^2");
-		polynomial1 = new Polynomial("7y^6-7x^2");
+		polynomial1 = new Polynomial("7y^6-3x^6+7x^2");
 		result = polynomial.add(polynomial1);
-		assertEquals("7y^6+5x^6-7x^2+8y^2",result.toString());
+		assertEquals("7y^6+2x^6+7x^2+8y^2",result.toString());
+	}
+
+	@Test
+	public void simplifyTest()
+	{
+		polynomial = new Polynomial("a^2-2a+5a^3+1+10a");
+		polynomial.simplify();
+		assertEquals("5a^3+a^2+8a+1",polynomial.toString());
+	}
+
+	@Test
+	public void simplify()
+	{
+		polynomial = new Polynomial("95a-88-28a^2+65-26");
+		polynomial.simplify();
+		assertEquals("-28a^2+95a-49",polynomial.toString());
+	}
+
+	@Test
+	public void simplify1()
+	{
+		polynomial = new Polynomial("11-41x^2+33-71x^2+40x");
+		polynomial.simplify();
+		System.out.println(polynomial.toString());
+		assertEquals("-112x^2+40x+44",polynomial.toString());
+	}
+
+	@Test
+	public void test123()
+	{
+		polynomial = new Polynomial("12x^3y^4+3z-45");
+
+		System.out.println(polynomial);
+
+
 	}
 
 

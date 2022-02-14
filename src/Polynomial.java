@@ -1,6 +1,4 @@
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * PolynomialEvaluation
@@ -17,10 +15,12 @@ public class Polynomial implements PolynomialInterface
 	private Node head;
 	private int degree;
 	private int terms;
+	private boolean isMultivariable;
 
 	private String originalPolynomial;
 
 	private String[] multiVars;
+	private TreeMap<String, Integer> variablesMap;
 	private static String[] polyByTerms;
 	private static String[] polyByDegree;
 
@@ -33,6 +33,8 @@ public class Polynomial implements PolynomialInterface
 				"Quartic", "Quintic", "Sextic", "Septic", "Octic", "Nonic", "Decic"};
 		this.termPairs = new LinkedHashMap<>();
 		this.degree = 0;
+		this.isMultivariable = false;
+		this.variablesMap = new TreeMap<>();
 	}
 
 	public Polynomial(String poly)
@@ -42,43 +44,71 @@ public class Polynomial implements PolynomialInterface
 			throw new PolynomialFormatError("Empty Polynomial");
 		this.originalPolynomial = poly;
 		parsePolynomial(poly.replaceAll(" ", ""));
+
 	}
 
 	public Polynomial(String poly, String...variables)
 	{
 		this(poly);
-		multiVars = new String[variables.length];
-		System.arraycopy(variables,0,multiVars,0,variables.length);
+		multiVars = variables;
+
 	}
 
-	@SuppressWarnings("StringConcatenationInLoop")
+	// TODO Properly parse and store multivariable polynomial ex: 12x^3y^4z*5 + 3y ...
+	@SuppressWarnings({"StringConcatenationInLoop","Unused"})
 	private void parsePolynomial(String poly)
 	{
 		boolean sign = false, expo = false;
 		String coeff = "", expon = "", var = "";
 		for(int i = 0; i < poly.length(); i++){
-			if(Character.isDigit(poly.charAt(i))){
-				if(expo) expon += poly.charAt(i);
-				else coeff += poly.charAt(i);
+			char currChar = poly.charAt(i);
+			if(Character.isDigit(currChar)){
+				if(expo) {
+					if(currChar > 0) {
+						if(isMultivariable) {
+							expon += ","+currChar;
+						}else{
+							expon += currChar;
+						}
+					}else{
+						throw new PolynomialFormatError("Negative Exponent: " + originalPolynomial);
+					}
+				}
+				else
+					coeff += currChar;
 				continue;
-			}if(Character.isLetter(poly.charAt(i)) && !expo){
-				var = String.valueOf(poly.charAt(i));
+			}if(Character.isLetter(currChar) && !expo){
+				if(isMultivariable){
+					var += "," + currChar;
+				}else {
+					var += String.valueOf(currChar);
+				}
+				if(!variablesMap.containsKey(String.valueOf(currChar))){
+					variablesMap.put(String.valueOf(currChar),1);
+				}
 				continue;
-			}if(poly.charAt(i) == '^'){
+			}if(currChar == '^'){
 				expo = true; continue;
-			}if(poly.charAt(i) == '-'){
+			}if(currChar == '-'){
 				if(i > 0){
 					createTerm(coeff,var,expon,sign);
 					coeff = ""; expon = ""; var = "";
 				}
-				sign = true; expo = false; continue;
-			}if(poly.charAt(i) == '+'){
+				sign = true; expo = false; isMultivariable = false;
+				continue;
+			}if(currChar == '+'){
 				if(i > 0){
 					createTerm(coeff,var,expon,sign);
 					coeff = ""; expon = ""; var = "";
 				}
-				expo = false; sign = false;
-			}else
+				expo = false; sign = false; isMultivariable = false;
+				continue;
+			}if(Character.isLetter(currChar)){
+				isMultivariable = true;
+				expo = false;
+				i--;
+			}
+			else
 				throw new PolynomialFormatError("Invalid Polynomial: " + originalPolynomial);
 		}
 		createTerm(coeff,var,expon,sign);
@@ -184,6 +214,13 @@ public class Polynomial implements PolynomialInterface
 
 		if(this.originalPolynomial.equals("1")) return other;
 		else if(other.originalPolynomial.equals("1")) return this;
+		else if(this.originalPolynomial.equals("-1")){
+			other.negatePolynomial();
+			return other;
+		}else if(other.originalPolynomial.equals("-1")){
+			this.negatePolynomial();
+			return this;
+		}
 		else if(this.originalPolynomial.equals("0") || other.originalPolynomial.equals("0"))
 			return new Polynomial("0");
 		else {
@@ -375,6 +412,11 @@ public class Polynomial implements PolynomialInterface
 		return type;
 	}
 
+	/**
+	 * Use this evaluate single-variable polynomials
+	 * @param value - Variable Value
+	 * @return Solved polynomial value
+	 */
 	public double evaluate(double value)
 	{
 		double result = 0;
@@ -386,6 +428,45 @@ public class Polynomial implements PolynomialInterface
 		}
 		return result;
 	}
+
+	//TODO: Fix multivariables with individual exponents ex: 12x^3y^4z*5 + 3y ...
+
+	/**
+	 * Solves multi-variable polynomials.
+	 * Can be used to solve either a single variable polynomials or multivariable polynomials.
+	 * FORMAT: [x,y,z,...], based on how many variables present in the polynomial.
+	 * The variables array is sorted in alphabetical order.
+	 * @param values int array with variables -> values
+	 * @return Solved result
+	 */
+	public double evaluate(int[] values)
+	{
+		if(variablesMap.size() == 1){
+			return evaluate(values[0]);
+		}else{
+			int index = 0;
+			for(String key : variablesMap.keySet()){
+				variablesMap.replace(key,values[index++]);
+			}
+			double result = 0;
+			Node currNode = this.head;
+//			while(currNode != null){
+//				if(currNode.var.length()>1){
+//					int j = currNode.var.length();
+//					for(int i = 0; i < j; j++) {
+//						double tempResult = 1;
+//						String currVar = currNode.var.substring(i,i+1);
+//						if(variablesMap.containsKey(currVar)){
+//							tempResult *= ;
+//
+//						}
+//					}
+//				}
+//			}
+			return 0;
+		}
+	}
+
 
 	public void deletePolynomial()
 	{
@@ -453,21 +534,40 @@ public class Polynomial implements PolynomialInterface
 		private int coeff;
 		private int expo;
 		private String var;
+		private TreeMap<String, Integer> multiVarMap;
+		private int termDegree;
 
 		private Node next;
 
+		private Node()
+		{
+			multiVarMap = new TreeMap<>();
+		}
+
 		private Node(int co, int ex, String vr)
 		{
+			this();
 			this.coeff = co;
 			this.expo = ex;
 			this.var = vr;
+		}
+
+		public String toString()
+		{
+			String term = "";
+			term += coeff == 1 ? "" : coeff;
+			term += var.isEmpty() ? "" : var;
+			if(expo > 1){
+				term += "^"+expo;
+			}
+			return term;
 		}
 	}
 
 	private static class Pair
 	{
-		private Node a;
-		private Node b;
+		private final Node a;
+		private final Node b;
 		private Pair(Node first, Node second){
 			a = first;
 			b = second;
